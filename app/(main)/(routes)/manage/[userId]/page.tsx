@@ -25,6 +25,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { db } from '../../../../../components/firebase-config';
 import { Input } from "@/components/ui/input";
+
+
 interface ManageAppProps {
   initialData: Doc<"documents">;
   parentDocumentId?: Id<"documents">;
@@ -176,7 +178,66 @@ const ManageApp = ({
 
   return (
     <div className="pb-40">
-   
+      <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
+        <p className="text-4xl pt-6 mt-3 font-bold">Manage applications</p>
+
+        {documents.map((document) => (
+          <Card className="w-[350px] mt-5" key={document._id}  >
+            <CardHeader>
+              <CardTitle> {document.title}</CardTitle>
+              {formatTimestamp(document._creationTime)}
+            </CardHeader>
+            <CardContent>
+              <form>
+                <div className="grid w-full items-center gap-4">
+                  <div className="flex flex-col space-y-1.5">
+                    {/* Add any input fields or other elements as needed */}
+                  </div>
+                  <div className="flex flex-col space-y-1.5">
+                    {/* Add any input fields or other elements as needed */}
+                  </div>
+                </div>
+              </form>
+            </CardContent>
+            <CardFooter className="flex gap-5" key={document._id}>
+              <Button onClick={handleChatInput} key={document._id}>
+                Show Data
+              </Button>
+              <Button onClick={() => setShowDialog(true)} key={document._id}>
+            Add Edits
+           </Button>
+            </CardFooter>
+          </Card>
+        ))}
+       {documents.map((document) => (
+     <Dialog open={showDialog} onOpenChange={onClose} key={document._id}>
+     <DialogContent>
+      <DialogHeader className="border-b pb-3">
+     <h2 className="text-lg font-medium">
+        Add Edits
+       </h2>
+  </DialogHeader>
+  <Input
+  type="text"
+  value={editInput}
+  onChange={handleEditInput}
+  placeholder="Enter edits..."
+  className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+  />
+  <Button
+  onClick={() => handleEditSubmission(document._id)} key={document._id}
+  className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
+  disabled={loading}
+  >
+  {loading ? 'Loading...' : 'Submit'}
+  </Button>
+  {error && <p className="text-red-500">{error}</p>}
+  {aiResponse && <p>{aiResponse}</p>}
+  </DialogContent>
+     </Dialog>
+       ))}
+     
+      </div>
     </div>
   );
 }
