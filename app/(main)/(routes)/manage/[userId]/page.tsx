@@ -208,7 +208,7 @@ const ManageApp = ({
           </Card>
         ))}
        {documents.map((document) => (
-     <Dialog open={showDialog} onOpenChange={onClose}>
+     <Dialog open={showDialog} onOpenChange={onClose} key={document._id}>
      <DialogContent>
       <DialogHeader className="border-b pb-3">
      <h2 className="text-lg font-medium">
