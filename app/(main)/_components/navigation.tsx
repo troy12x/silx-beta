@@ -34,11 +34,9 @@ import { TrashBox } from "./trash-box";
 import { Navbar } from "./navbar";
 import { mutation } from "@/convex/_generated/server";
 
-interface NavigationProps {
-  initialData: Doc<"documents">;
-}
 
-export const Navigation = ({ initialData}:NavigationProps) => {
+
+export const Navigation = () => {
   const router = useRouter();
   const settings = useSettings();
   const search = useSearch();
