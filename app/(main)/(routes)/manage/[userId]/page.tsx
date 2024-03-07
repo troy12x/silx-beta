@@ -197,11 +197,11 @@ const ManageApp = ({
                 </div>
               </form>
             </CardContent>
-            <CardFooter className="flex gap-5">
-              <Button onClick={handleChatInput}>
+            <CardFooter className="flex gap-5" key={document._id}>
+              <Button onClick={handleChatInput} key={document._id}>
                 Show Data
               </Button>
-              <Button onClick={() => setShowDialog(true)}>
+              <Button onClick={() => setShowDialog(true)} key={document._id}>
             Add Edits
            </Button>
             </CardFooter>
@@ -223,7 +223,7 @@ const ManageApp = ({
   className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
   />
   <Button
-  onClick={() => handleEditSubmission(document._id)}
+  onClick={() => handleEditSubmission(document._id)} key={document._id}
   className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
   disabled={loading}
   >
