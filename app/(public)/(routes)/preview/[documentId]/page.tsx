@@ -68,7 +68,7 @@ const onChange = (content: string) => {
         <Editor
   editable={false}
   onChange={onChange}
-  preview
+
   initialContent={document.content}
   initialData={document}
 
