@@ -66,13 +66,13 @@ const onChange = (content: string) => {
         <Toolbar preview initialData={document} />
         
         <Editor
-  editable={false}
-  onChange={onChange}
+        editable={false}
+        onChange={onChange}
+      
+        initialContent={document.content}
+        initialData={document}
 
-  initialContent={document.content}
-  initialData={document}
-
-/>
+        />
 
         {/*  <DragItem onChange={(value) => console.log("DragItem value:", value)} /> */}
 

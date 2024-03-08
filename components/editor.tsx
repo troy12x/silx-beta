@@ -7,8 +7,7 @@ import {
 } from "@blocknote/core";
 import {
   BlockNoteView,
-  useCreateBlockNote
-
+  useBlockNote
 } from "@blocknote/react";
 import "@blocknote/core/style.css";
 import { useState, useEffect } from 'react';
@@ -32,7 +31,7 @@ import { Button } from './ui/button';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { useEdgeStore } from "@/lib/edgestore";
-import { getById } from '@/convex/documents';
+import { getById } from '@/convex/documents'; 
 import { Doc } from "@/convex/_generated/dataModel";
 
 
@@ -44,14 +43,14 @@ interface User {
   university: string;
   documentsId: string; // Added documentId field
   userId: string; // Added userId field
-
+  
 }
 
 interface EditorProps {
   onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
-  
+
 
   initialData: Doc<"documents">;
 }
@@ -63,7 +62,7 @@ const Editor = ({
 
 
   initialData
-  // Receive Convex document ID as prop
+ // Receive Convex document ID as prop
 }: EditorProps) => {
   const [formData, setFormData] = useState<User>({
     name: '',
@@ -90,7 +89,7 @@ const Editor = ({
   const { edgestore } = useEdgeStore();
 
   const handleUpload = async (file: File) => {
-    const response = await edgestore.publicFiles.upload({
+    const response = await edgestore.publicFiles.upload({ 
       file
     });
 
@@ -98,33 +97,34 @@ const Editor = ({
   }
 
 
-  const editor =  useCreateBlockNote({
-     
-    initialContent:
-      initialContent
-        ? JSON.parse(initialContent) as PartialBlock[]
-        : undefined,
-          
+  const editor = useBlockNote({
+    editable,
+    initialContent: 
+      initialContent 
+      ? JSON.parse(initialContent)
+      : undefined,
+    onEditorContentChange: (editor) => {
+      onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
+    },
     uploadFile: handleUpload
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
   const handleSubmit = async () => {
     try {
       setLoading(true);
-
+  
       // Generate a unique userId using uuid
       const userId = uuidv4();
-
+  
       // Add the userId to the form data
       const formDataWithUserId = { ...formData, userId };
-
+  
       // Add the form data to Firestore
       const docRef = await addDoc(collection(db, 'users'), formDataWithUserId);
-
+  
       console.log('Document written with ID: ', docRef.id);
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -133,7 +133,7 @@ const Editor = ({
       setLoading(false);
     }
   };
-
+  
 
 
   const fetchDataFromFirestore = async () => {
@@ -150,7 +150,7 @@ const Editor = ({
       const usersData = await fetchDataFromFirestore();
       const userDataText = usersData.map(user => `${user.name} ${user.age} ${user.email} ${user.summary} ${user.university}`).join(' ');
       const prompt = `${chatInput} ${userDataText}`;
-
+    
       const response = await axios.post(
         'https://api.openai.com/v1/completions',
         {
@@ -165,9 +165,9 @@ const Editor = ({
           }
         }
       );
-
+  
       const answer = response.data.choices[0].text.trim();
-
+  
       if (answer) {
         setAiResponse(answer);
         setShowDialog(true);
@@ -200,40 +200,40 @@ const Editor = ({
     setAiResponse('');
     setError('');
   };
-
+  
   return (
     <div >
 
-      <BlockNoteView
-        editor={editor}
-        theme={resolvedTheme === "dark" ? "dark" : "light"}
-      />
+         <BlockNoteView
+          editor={editor}
+          theme={resolvedTheme === "dark" ? "dark" : "light"}
+          />
 
-      <div className="pl-[54px] group relative mt-3">
-        <div className="grid w-full max-w-sm items-center ">
-          <Label htmlFor="name">Your Name</Label>
-          <Input type="text" name="name" placeholder="Eyad Gomaa" onChange={handleInputChange} className="w-60 mt-3" />
-        </div>
-        <div className="grid w-full max-w-sm items-center mt-3 ">
-          <Label htmlFor="email">Email</Label>
-          <Input type="email" name="email" placeholder="admin@silx.com" onChange={handleInputChange} className="w-60 mt-3" />
-        </div>
-        <div className="grid w-full max-w-sm items-center mt-3 ">
-          <Label htmlFor="age">Age</Label>
-          <Input type="number" name="age" placeholder="25" onChange={handleInputChange} className="w-60 mt-3" />
-        </div>
-        <div className="grid w-full max-w-sm items-center mt-3 ">
-          <Label htmlFor="summary">Summary</Label>
-          <Input type="text" name="summary" placeholder="I'm a tech wizard with a byte-sized experience of 8 years in the digital realm" onChange={handleInputChange} className="w-60 mt-3" />
-        </div>
-        <div className="grid w-full max-w-sm items-center mt-3 ">
-          <Label htmlFor="university">University</Label>
-          <Input type="text" name="university" placeholder="Harvard " onChange={handleInputChange} className="w-60 mt-3" />
-        </div>
+     <div className="pl-[54px] group relative mt-3">
+     <div className="grid w-full max-w-sm items-center ">
+      <Label htmlFor="name">Your Name</Label>
+      <Input type="text" name="name" placeholder="Eyad Gomaa" onChange={handleInputChange} className="w-60 mt-3" />
+    </div>
+    <div className="grid w-full max-w-sm items-center mt-3 ">
+      <Label htmlFor="email">Email</Label>
+      <Input type="email" name="email" placeholder="admin@silx.com" onChange={handleInputChange} className="w-60 mt-3" />
+    </div>
+    <div className="grid w-full max-w-sm items-center mt-3 ">
+      <Label htmlFor="age">Age</Label>
+      <Input type="number" name="age" placeholder="25" onChange={handleInputChange} className="w-60 mt-3" />
+    </div>
+    <div className="grid w-full max-w-sm items-center mt-3 ">
+      <Label htmlFor="summary">Summary</Label>
+      <Input type="text" name="summary" placeholder="I'm a tech wizard with a byte-sized experience of 8 years in the digital realm" onChange={handleInputChange} className="w-60 mt-3" />
+    </div>
+    <div className="grid w-full max-w-sm items-center mt-3 ">
+      <Label htmlFor="university">University</Label>
+      <Input type="text" name="university" placeholder="Harvard " onChange={handleInputChange} className="w-60 mt-3" />
+    </div>
+    
+      {/* Other form inputs */}
 
-        {/* Other form inputs */}
-
-        {/** <div>
+     {/** <div>
       {!!initialData._id &&  (
         <p className="text-6xl pt-6">
           {initialData._id}
@@ -242,39 +242,39 @@ const Editor = ({
        
       </div> */}
 
-        <Button onClick={handleSubmit} className="mt-3">Submit</Button>
+      <Button onClick={handleSubmit} className="mt-3">Submit</Button>
 
 
-        {/**      <Input type="text" placeholder="Ask any question..." value={chatInput} onChange={(e) => setChatInput(e.target.value)} className="mt-3 w-60" />
+{/**      <Input type="text" placeholder="Ask any question..." value={chatInput} onChange={(e) => setChatInput(e.target.value)} className="mt-3 w-60" />
       <Button onClick={handleChatInput} className="mt-3" disabled={loading}>Ask</Button> */}
+ 
 
+      <Dialog open={showDialog} onOpenChange={onClose} >
+        <DialogContent>
+          <DialogHeader className="border-b pb-3">
+            <h2 className="text-lg font-medium">
+              AI Response
+            </h2>
+          </DialogHeader>
+          <div>
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p>{error}</p>
+            ) : aiResponse ? (
+              <p>{aiResponse}</p>
+            ) : (
+              matches.map((match, index) => (
+                <div key={index}>
+                  {/* Render user details here */}
+                </div>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
-        <Dialog open={showDialog} onOpenChange={onClose} >
-          <DialogContent>
-            <DialogHeader className="border-b pb-3">
-              <h2 className="text-lg font-medium">
-                AI Response
-              </h2>
-            </DialogHeader>
-            <div>
-              {loading ? (
-                <p>Loading...</p>
-              ) : error ? (
-                <p>{error}</p>
-              ) : aiResponse ? (
-                <p>{aiResponse}</p>
-              ) : (
-                matches.map((match, index) => (
-                  <div key={index}>
-                    {/* Render user details here */}
-                  </div>
-                ))
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-
-      </div>
+     </div>
     </div>
   );
 };
