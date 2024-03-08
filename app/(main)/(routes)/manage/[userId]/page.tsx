@@ -42,7 +42,7 @@ interface User {
 
 interface ManageAppProps {
   parentDocumentId?: Id<"documents">;
-}
+};
 
 const ManageApp: React.FC<ManageAppProps> = ({ parentDocumentId }: ManageAppProps) => {
   const params = useParams();
