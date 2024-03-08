@@ -180,7 +180,7 @@ const ManageApp = ({
         <p className="text-4xl pt-6 mt-3 font-bold">Manage applications</p>
 
         {documents.map((document) => (
-          <Card className="w-[350px] mt-5" key={document._id}  >
+          <Card className="w-[350px] mt-5"  >
             <CardHeader>
               <CardTitle> {document.title}</CardTitle>
               {formatTimestamp(document._creationTime)}
@@ -198,10 +198,10 @@ const ManageApp = ({
               </form>
             </CardContent>
             <CardFooter className="flex gap-5">
-              <Button onClick={handleChatInput} key={document._id}>
+              <Button onClick={handleChatInput}>
                 Show Data
               </Button>
-              <Button onClick={() => setShowDialog(true)}  key={document._id}>
+              <Button onClick={() => setShowDialog(true)} >
             Add Edits
            </Button>
             </CardFooter>
