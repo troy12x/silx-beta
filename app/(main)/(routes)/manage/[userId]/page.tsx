@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/router";
 import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
@@ -39,7 +38,7 @@ interface User {
 
 // Use the union type to accept either the base props or the extended props
 const ManageApp = ({}) => {
-  const router = useRouter();
+
 
   const documents = useQuery(api.documents.getSidebar, {
 
@@ -64,13 +63,8 @@ const ManageApp = ({}) => {
     setError('');
   };
 
-  const handleRedirect = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
-  };
-  
-  const onRedirect = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
-  };
+
+
 
   if (documents === undefined) {
     return (
