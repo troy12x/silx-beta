@@ -38,7 +38,7 @@ interface ManageAppProps {
   parentDocumentId?: Id<"documents">;
 }
 
-export const ManageApp: React.FC<ManageAppProps> = ({ parentDocumentId }: ManageAppProps) => {
+ const ManageApp: React.FC<ManageAppProps> = ({ parentDocumentId }: ManageAppProps) => {
   const router = useRouter();
 
   const documents = useQuery(api.documents.getSidebar, {
@@ -219,3 +219,5 @@ export const ManageApp: React.FC<ManageAppProps> = ({ parentDocumentId }: Manage
     </div>
   );
 };
+
+export default ManageApp; // Export ManageApp as the default export
