@@ -80,7 +80,7 @@ const DocumentIdPage = ({
           onChange={onChange}
           initialContent={document.content}
           initialData={document}
-
+   
         />
         
       

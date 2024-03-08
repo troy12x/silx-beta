@@ -188,7 +188,7 @@ export const Navigation = () => {
           />
             <Item
               onClick={() => handleManage()}
-
+           
             label="Manage applications "
             icon={Database}
           />

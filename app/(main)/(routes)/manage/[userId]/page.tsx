@@ -198,10 +198,10 @@ const ManageApp = ({
               </form>
             </CardContent>
             <CardFooter className="flex gap-5">
-              <Button onClick={handleChatInput}>
+              <Button onClick={handleChatInput} key={document._id}>
                 Show Data
               </Button>
-              <Button onClick={() => setShowDialog(true)}>
+              <Button onClick={() => setShowDialog(true)}  key={document._id}>
             Add Edits
            </Button>
             </CardFooter>
