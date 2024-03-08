@@ -1,6 +1,3 @@
-"use client"; // Add this line to mark the parent component as a client component
-
-
 import { useRouter } from "next/router";
 import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
@@ -34,11 +31,18 @@ interface User {
   documentsId: string; // Added documentId field
 }
 
-interface ManageAppProps {
+// Define the base props
+type ManageAppBaseProps = {
   parentDocumentId?: Id<"documents">;
 }
 
- const ManageApp: React.FC<ManageAppProps> = ({ parentDocumentId }: ManageAppProps) => {
+// Define the extended props by extending the base props
+type ManageAppExtendedProps = ManageAppBaseProps & {
+  // Add any additional props here
+}
+
+// Use the union type to accept either the base props or the extended props
+const ManageApp: React.FC<ManageAppBaseProps | ManageAppExtendedProps> = ({ parentDocumentId }: ManageAppBaseProps | ManageAppExtendedProps) => {
   const router = useRouter();
 
   const documents = useQuery(api.documents.getSidebar, {
@@ -220,4 +224,4 @@ interface ManageAppProps {
   );
 };
 
-export default ManageApp; // Export ManageApp as the default export
+export default  ManageApp; // Export ManageApp as the default export
