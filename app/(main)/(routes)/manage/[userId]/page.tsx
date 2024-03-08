@@ -41,7 +41,7 @@ interface User {
   
 }
 
-const ManageApp: React.FC<ManageAppProps>  = ({
+export const ManageApp: React.FC<ManageAppProps>  = ({
 
   parentDocumentId,
 }: ManageAppProps) => {
@@ -244,4 +244,4 @@ const ManageApp: React.FC<ManageAppProps>  = ({
 }
 
 
-export default ManageApp;
+
