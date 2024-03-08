@@ -25,8 +25,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { db } from '../../../../../components/firebase-config';
 import { Input } from "@/components/ui/input";
+
+
 interface ManageAppProps {
-  initialData: Doc<"documents">;
   parentDocumentId?: Id<"documents">;
 }
 
@@ -40,8 +41,8 @@ interface User {
   
 }
 
-const ManageApp = ({
-  initialData,
+const ManageApp: React.FC<ManageAppProps>  = ({
+
   parentDocumentId,
 }: ManageAppProps) => {
   const params = useParams();
