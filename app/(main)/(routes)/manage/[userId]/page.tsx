@@ -1,3 +1,6 @@
+"use client"; // Add this line to mark the parent component as a client component
+
+
 import { useRouter } from "next/router";
 import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
