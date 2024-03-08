@@ -180,7 +180,7 @@ const ManageApp = ({
         <p className="text-4xl pt-6 mt-3 font-bold">Manage applications</p>
 
         {documents.map((document) => (
-          <Card className="w-[350px] mt-5"  >
+          <Card className="w-[350px] mt-5" key={document._id}  >
             <CardHeader>
               <CardTitle> {document.title}</CardTitle>
               {formatTimestamp(document._creationTime)}
@@ -198,17 +198,17 @@ const ManageApp = ({
               </form>
             </CardContent>
             <CardFooter className="flex gap-5">
-              <Button onClick={handleChatInput}>
+              <Button onClick={handleChatInput}   key={document._id}>
                 Show Data
               </Button>
-              <Button onClick={() => setShowDialog(true)} >
+              <Button onClick={() => setShowDialog(true)}  key={document._id}>
             Add Edits
            </Button>
             </CardFooter>
           </Card>
         ))}
        {documents.map((document) => (
-     <Dialog open={showDialog} onOpenChange={onClose}>
+     <Dialog open={showDialog} onOpenChange={onClose}  key={document._id}>
      <DialogContent>
       <DialogHeader className="border-b pb-3">
      <h2 className="text-lg font-medium">
@@ -218,12 +218,14 @@ const ManageApp = ({
   <Input
   type="text"
   value={editInput}
+  key={document._id}
   onChange={handleEditInput}
   placeholder="Enter edits..."
   className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
   />
   <Button
-  onClick={() => handleEditSubmission(document._id)}
+  onClick={() => handleEditSubmission(document._id)} 
+  key={document._id}
   className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
   disabled={loading}
   >
