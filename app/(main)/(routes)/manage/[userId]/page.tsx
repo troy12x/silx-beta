@@ -34,21 +34,15 @@ interface User {
 }
 
 // Define the base props
-type ManageAppBaseProps = {
-  parentDocumentId?: Id<"documents">;
-}
 
-// Define the extended props by extending the base props
-type ManageAppExtendedProps = ManageAppBaseProps & {
-  // Add any additional props here
-}
+
 
 // Use the union type to accept either the base props or the extended props
-const ManageApp: React.FC<ManageAppBaseProps | ManageAppExtendedProps> = ({ parentDocumentId }: ManageAppBaseProps | ManageAppExtendedProps) => {
+const ManageApp = ({}) => {
   const router = useRouter();
 
   const documents = useQuery(api.documents.getSidebar, {
-    parentDocument: parentDocumentId
+
   });
   const [chatInput, setChatInput] = useState('');
   const [aiResponse, setAiResponse] = useState<string>('');
