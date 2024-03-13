@@ -127,7 +127,40 @@ export const manage = mutation({
     return userId;
   }
 });
+export const getDocumentById = query({
+  args: { documentId: v.id("documents") },
+  handler: async (ctx, args) => {
+    // Retrieve the authenticated user's identity
+    const identity = await ctx.auth.getUserIdentity();
 
+    // Ensure the user is authenticated
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    // Extract the user ID from the identity
+    const userId = identity.subject;
+
+    // Retrieve the document with the provided documentId
+    const document = await ctx.db.get(args.documentId);
+
+    // If the document doesn't exist, throw an error
+    if (!document) {
+      throw new Error("Document not found");
+    }
+
+    // If the document is not published or archived, check if the user is authorized to access it
+    if (!document.isPublished || document.isArchived) {
+      // If the user is not the owner of the document, throw an error
+      if (document.userId !== userId) {
+        throw new Error("Unauthorized");
+      }
+    }
+
+    // Return the retrieved document
+    return document;
+  }
+});
 
 export const getTrash = query({
   handler: async (ctx) => {
@@ -262,19 +295,64 @@ export const getSearch = query({
 });
 
 export const get = query({
-  handler:async(ctx) => {
+  args: { documentId: v.id("documents") },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if(!identity) {
-      throw new Error("Not authencaited");
+
+    const document = await ctx.db.get(args.documentId);
+
+    if (!document) {
+      throw new Error("Not found");
     }
 
-    const docuemnts = await ctx.db.query("documents").collect();
-    
-    return docuemnts;
+    if (document.isPublished && !document.isArchived) {
+      return document;
+    }
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = identity.subject;
+
+    if (document.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    return document;
   }
 })
 
 export const getById = query({
+  args: { documentId: v.id("documents") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    const document = await ctx.db.get(args.documentId);
+
+    if (!document) {
+      throw new Error("Not found");
+    }
+
+    if (document.isPublished && !document.isArchived) {
+      return document;
+    }
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = identity.subject;
+
+    if (document.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    return document;
+  }
+});
+
+export const getdoc = query({
   args: { documentId: v.id("documents") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();

@@ -140,7 +140,7 @@ export const Navigation = () => {
   const handleManage = async () => {
     const promise = manage({  })
     .then((userId) => router.push(`/manage/${userId}`))
-
+    
   toast.promise(promise, {
     loading: "Loading...",
    

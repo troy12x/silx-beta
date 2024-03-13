@@ -41,18 +41,20 @@ interface User {
   summary: string;
   age: number;
   university: string;
-  documentsId: string; // Added documentId field
+  documentId: string; // Added documentId field
   userId: string; // Added userId field
-  
 }
 
 interface EditorProps {
   onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
+  initialData: Doc<"documents">; 
+}
 
-
-  initialData: Doc<"documents">;
+interface Organization {
+  name: string;
+  image_url: string;
 }
 
 const Editor = ({
@@ -71,7 +73,7 @@ const Editor = ({
     age: 0,
     university: '',
     userId: "", // Added userId field
-    documentsId: initialData._id // Initialize documentId field
+    documentId: initialData._id // Initialize documentId field
   });
 
   const [chatInput, setChatInput] = useState('');
@@ -80,8 +82,10 @@ const Editor = ({
   const [showDialog, setShowDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [companyData, setCompanyData] = useState<Organization[]>([]);
 
-
+  const [selectedCompany, setSelectedCompany] = useState<string>('');
+  const [companyNames, setCompanyNames] = useState<string[]>([]);
   const [sidebarDocuments, setSidebarDocuments] = useState([]);
 
 
@@ -194,12 +198,35 @@ const Editor = ({
     };
     fetchUserData();
   }, []);
+  
 
   const onClose = () => {
     setShowDialog(false);
     setAiResponse('');
     setError('');
   };
+
+  const fetchOrganizations = async () => {
+    try {
+        const response = await axios.post('http://localhost:3001/api/organizations');
+        const organizations: Organization[] = response.data;
+        setCompanyNames(organizations.map((org: Organization) => org.name));
+    } catch (error) {
+        console.error('Error fetching organizations:', error);
+    }
+};
+
+
+
+// Call fetchOrganizations when component mounts
+useEffect(() => {
+    fetchOrganizations();
+}, []);
+
+  const handleCompanySelect = (name: string) => {
+    setSelectedCompany(name);
+  };
+
   
   return (
     <div >
@@ -222,6 +249,23 @@ const Editor = ({
       <Label htmlFor="age">Age</Label>
       <Input type="number" name="age" placeholder="25" onChange={handleInputChange} className="w-60 mt-3" />
     </div>
+    <div className="grid w-full max-w-sm items-center">
+      <label htmlFor="company">Company</label>
+      <select
+        name="company"
+        value={selectedCompany}
+        onChange={(e) => handleCompanySelect(e.target.value)}
+        className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+      >
+        <option value="" disabled>Select Company</option>
+        {companyData.map((company, index) => (
+          <option key={index} value={company.name}>
+            {company.name}
+          </option>
+        ))}
+      </select>
+    </div>
+
     <div className="grid w-full max-w-sm items-center mt-3 ">
       <Label htmlFor="summary">Summary</Label>
       <Input type="text" name="summary" placeholder="I'm a tech wizard with a byte-sized experience of 8 years in the digital realm" onChange={handleInputChange} className="w-60 mt-3" />
