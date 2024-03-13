@@ -199,12 +199,13 @@ const Editor = ({
     fetchUserData();
   }, []);
   
-//test
-  const onClose = () => {
-    setShowDialog(false);
-    setAiResponse('');
-    setError('');
-  };
+//test d12232
+
+const onClose = () => {
+  setShowDialog(false);
+  setAiResponse('');
+  setError('');
+};
 
   const fetchOrganizations = async () => {
     try {
