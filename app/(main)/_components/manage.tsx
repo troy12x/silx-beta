@@ -47,7 +47,7 @@ interface User {
 
 
 interface ManageProps {
-    initialData: Doc<"documents">;
+
     parentDocumentId?: Id<"documents">;
     level?: number;
     data?: Doc<"documents">[];
@@ -62,7 +62,7 @@ interface ManageProps {
 
 
 export const Manage = ({
-    initialData,
+
     parentDocumentId,
   level = 0
 }: ManageProps) => {

@@ -45,10 +45,8 @@ const ManageApp = ({
 }) => {
   
   const params = useParams();
-  const document = useQuery(api.documents.getServer, {
-   documentId: params.documentId as Id<"documents">,
-  });
 
+  
 
 
   const OPENAI_API_KEY = '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';
@@ -77,7 +75,7 @@ const ManageApp = ({
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
         <p className="text-4xl pt-6 mt-3 font-bold">Manage applications</p>
 
-       <Manage initialData={document} />
+       <Manage />
 
         {/* Dialog for adding edits */}
 
