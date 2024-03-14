@@ -34,7 +34,7 @@ import { db } from '../../../../../components/firebase-config';
 import { Input } from "@/components/ui/input";
 import { Doc } from "@/convex/_generated/dataModel";
 import DocumentIdPage from "@/app/(public)/(routes)/preview/[documentId]/page";
-import TrueManage from "./[documentId]/page";
+
 import { Manage } from "@/app/(main)/_components/manage";
 
 
@@ -45,8 +45,8 @@ const ManageApp = ({
 }) => {
   
   const params = useParams();
-  const document = useQuery(api.documents.get, {
-    documentId: params.documentId as Id<"documents">,
+  const document = useQuery(api.documents.getServer, {
+   documentId: params.documentId as Id<"documents">,
   });
 
 
