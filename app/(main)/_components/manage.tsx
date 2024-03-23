@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { Spinner } from "@/components/spinner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { collection, addDoc, getDocs, query, where, doc, updateDoc ,getDoc} from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, doc, updateDoc ,getDoc,setDoc} from 'firebase/firestore';
 import {
   Dialog,
   DialogContent,
@@ -45,7 +45,8 @@ interface User {
   skills: string[];
   companyRankOrg: number;
   aiResponse?: string; // Optional property for aiResponse
-
+  selected:string;
+  id: string; // Add this line
 }
 
 const calculateExperiencePoints = (experience: number): number => {
@@ -165,8 +166,6 @@ export const Manage = ({
         return;
       }
   
-      const allUsers = [...usersData]; // Store all users data
-  
       const bestApplication = findBestApplication(usersData);
   
       if (bestApplication === null) {
@@ -176,23 +175,24 @@ export const Manage = ({
         return;
       }
   
-      const response = await generateResponse(bestApplication, allUsers); // Generate response for the best application
+      const response = await generateResponse(bestApplication, usersData); // Generate response for the best application
   
-      // Set AI response in Firestore for the best application
-      const userRef = doc(db, 'users', bestApplication.userId);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        const userData = userDoc.data() as Partial<User>; // Type assertion to Partial<User>
-        if (userData && userData.name !== undefined && userData.email !== undefined && userData.summary !== undefined && userData.age !== undefined && userData.university !== undefined && userData.userId !== undefined && userData.documentId !== undefined && userData.experience !== undefined && userData.skills !== undefined && userData.companyRankOrg !== undefined) {
-          const currentAiResponse = userData.aiResponse || '';
-          if (!currentAiResponse || calculateTotalPoints(userData as User) > calculateTotalPoints(bestApplication)) {
-            await updateDoc(userRef, {
-              aiResponse: response
-            });
-          }
-        }
+      console.log("Generated AI Response:", response); // Logging the generated AI response
+  
+      // Update the selected field for the correct user
+      const userToUpdate = usersData.find(user => user.userId === bestApplication.userId);
+  
+      if (userToUpdate) {
+        const userRef = doc(db, 'users', userToUpdate.id); // This should be userToUpdate.id
+        await updateDoc(userRef, {
+          selected: response
+        });
+      } else {
+        setError("Failed to find the user to update.");
+        setShowDialog(true);
+        setLoading(false);
+        return;
       }
-      
   
       setAiResponse(response);
       setShowDialog(true);
@@ -203,6 +203,8 @@ export const Manage = ({
       setLoading(false);
     }
   };
+  
+  
   
   
 

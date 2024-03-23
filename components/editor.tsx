@@ -47,6 +47,7 @@ interface User {
   userId: string; // Added userId field
   experience: number;
   skills:string;
+  selected:string;
 }
 
 interface EditorProps {
@@ -104,6 +105,7 @@ const Editor = ({
     age: 0,
     experience:0,
     university: '',
+    selected:'',
     skills:'',
     userId: "", // Added userId field
     documentId: initialData._id // Initialize documentId field
