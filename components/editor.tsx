@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { useMutation, useQuery } from "convex/react";
 
 import { v4 as uuidv4 } from 'uuid';
+import { SelectValue, SelectTrigger, SelectItem, SelectGroup, SelectContent, Select } from "@/components/ui/select"
 
 
 import {
@@ -25,7 +26,8 @@ import {
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 
-import axios from 'axios';
+import axios , {AxiosError} from 'axios';
+
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
@@ -43,6 +45,8 @@ interface User {
   university: string;
   documentId: string; // Added documentId field
   userId: string; // Added userId field
+  experience: number;
+  skills:string;
 }
 
 interface EditorProps {
@@ -53,9 +57,36 @@ interface EditorProps {
 }
 
 interface Organization {
-  name: string;
+  uuid: string;
   image_url: string;
+  short_description: string;
+  identifier: {
+    permalink: string;
+    image_id: string;
+    uuid: string;
+    entity_def_id: string;
+    value: string;
+  };
+  properties: {
+    identifier: {
+      permalink: string;
+      image_id: string;
+      uuid: string;
+      entity_def_id: string;
+      value: string;
+    };
+    short_description: string;
+    rank_org: number;
+    location_identifiers: {
+      permalink: string;
+      uuid: string;
+      location_type: string;
+      entity_def_id: string;
+      value: string;
+    }[];
+  };
 }
+
 
 const Editor = ({
   onChange,
@@ -71,7 +102,9 @@ const Editor = ({
     email: '',
     summary: '',
     age: 0,
+    experience:0,
     university: '',
+    skills:'',
     userId: "", // Added userId field
     documentId: initialData._id // Initialize documentId field
   });
@@ -81,13 +114,17 @@ const Editor = ({
   const [aiResponse, setAiResponse] = useState<string>('');
   const [showDialog, setShowDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>('');
   const [companyData, setCompanyData] = useState<Organization[]>([]);
+  const [selectedCompanyName, setSelectedCompanyName] = useState<string>('');
+  const [selectedCompanyImageUrl, setSelectedCompanyImageUrl] = useState<string>('');
+  const [selectedCompanyRankOrg, setSelectedCompanyRankOrg] = useState<number | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<Organization | null>(null);
+  const [companySelections, setCompanySelections] = useState([{ id: uuidv4(), imageUrl: selectedCompanyImageUrl, name: selectedCompanyName }]);
 
-  const [selectedCompany, setSelectedCompany] = useState<string>('');
   const [companyNames, setCompanyNames] = useState<string[]>([]);
   const [sidebarDocuments, setSidebarDocuments] = useState([]);
 
+  const [error, setError] = useState<string | null>(null);
 
   const { resolvedTheme } = useTheme();
   const { edgestore } = useEdgeStore();
@@ -120,14 +157,27 @@ const Editor = ({
     try {
       setLoading(true);
   
-      // Generate a unique userId using uuid
+      // Validate required fields
+      if (!formData.name || !formData.email || !formData.age || !formData.experience) {
+        console.error('Please fill in all required fields.');
+        return;
+      }
+  
       const userId = uuidv4();
   
       // Add the userId to the form data
       const formDataWithUserId = { ...formData, userId };
   
+      // Add the selected company's information to the form data
+      const formDataWithCompany = {
+        ...formDataWithUserId,
+        companyName: selectedCompanyName,
+        companyImageUrl: selectedCompanyImageUrl,
+        companyRankOrg: selectedCompanyRankOrg
+      };
+  
       // Add the form data to Firestore
-      const docRef = await addDoc(collection(db, 'users'), formDataWithUserId);
+      const docRef = await addDoc(collection(db, 'users'), formDataWithCompany);
   
       console.log('Document written with ID: ', docRef.id);
     } catch (error) {
@@ -138,7 +188,8 @@ const Editor = ({
     }
   };
   
-
+  
+  
 
   const fetchDataFromFirestore = async () => {
     const usersCollection = collection(db, 'users');
@@ -147,7 +198,7 @@ const Editor = ({
     return usersData;
   };
 
-  const OPENAI_API_KEY = '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';
+  const OPENAI_API_KEY = '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';
   const handleChatInput = async () => {
     setLoading(true);
     try {
@@ -207,28 +258,62 @@ const onClose = () => {
   setError('');
 };
 
-
-
+useEffect(() => {
   const fetchOrganizations = async () => {
     try {
-        const response = await axios.post('http://localhost:3001/api/organizations');
-        const organizations: Organization[] = response.data;
-        setCompanyNames(organizations.map((org: Organization) => org.name));
+      const response = await axios.get('http://localhost:5000');
+      const { entities } = response.data; // Extract the entities array from the response data
+
+      if (Array.isArray(entities)) {
+
+        setCompanyData(entities.map(entity => entity.properties)); // Extracting properties from each entity
+      } else {
+        setError('Error: Organizations data is not in the expected format');
+      }
     } catch (error) {
-        console.error('Error fetching organizations:', error);
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        setError(`Axios Error: ${axiosError.message}`);
+      } else {
+        setError(`Error: ${(error as Error).message}`);
+      }
     }
+  };
+
+  fetchOrganizations();
+}, []);
+
+
+
+
+const handleCompanySelect = (value: string) => {
+
+  const selectedCompany = companyData.find(company => company.image_url === value);
+  if (selectedCompany) {
+    const companyName = selectedCompany.properties.identifier.value;
+    const companyImageUrl = selectedCompany.image_url;
+    const companyRankOrg = selectedCompany.properties.rank_org;
+
+    setSelectedCompanyName(companyName);
+    setSelectedCompanyImageUrl(companyImageUrl);
+    setSelectedCompanyRankOrg(companyRankOrg);
+
+    // Update the relevant fields in formData state
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      companyName: companyName,
+      companyImageUrl: companyImageUrl,
+      companyRankOrg: companyRankOrg
+    }));
+  }
 };
 
 
 
-// Call fetchOrganizations when component mounts
-useEffect(() => {
-    fetchOrganizations();
-}, []);
 
-  const handleCompanySelect = (name: string) => {
-    setSelectedCompany(name);
-  };
+
+
+
 
   
   return (
@@ -242,32 +327,68 @@ useEffect(() => {
      <div className="pl-[54px] group relative mt-3">
      <div className="grid w-full max-w-sm items-center ">
       <Label htmlFor="name">Your Name</Label>
-      <Input type="text" name="name" placeholder="Eyad Gomaa" onChange={handleInputChange} className="w-60 mt-3" />
+      <Input type="text" name="name" placeholder="Eyad Gomaa" onChange={handleInputChange} className="w-60 mt-3" required />
     </div>
     <div className="grid w-full max-w-sm items-center mt-3 ">
       <Label htmlFor="email">Email</Label>
-      <Input type="email" name="email" placeholder="admin@silx.com" onChange={handleInputChange} className="w-60 mt-3" />
+      <Input type="email" name="email" placeholder="admin@silx.com" onChange={handleInputChange} className="w-60 mt-3" required />
     </div>
     <div className="grid w-full max-w-sm items-center mt-3 ">
       <Label htmlFor="age">Age</Label>
-      <Input type="number" name="age" placeholder="25" onChange={handleInputChange} className="w-60 mt-3" />
+      <Input type="number" name="age" placeholder="25" onChange={handleInputChange} className="w-60 mt-3"  required/>
     </div>
-    <div className="grid w-full max-w-sm items-center">
-      <label htmlFor="company">Company</label>
-      <select
-        name="company"
-        value={selectedCompany}
-        onChange={(e) => handleCompanySelect(e.target.value)}
-        className="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-      >
-        <option value="" disabled>Select Company</option>
-        {companyData.map((company, index) => (
-          <option key={index} value={company.name}>
-            {company.name}
-          </option>
-        ))}
-      </select>
+    <div className="grid w-full max-w-sm items-center mt-3 ">
+      <Label htmlFor="experience">Experience</Label>
+      <Input type="number" name="experience" placeholder="6" onChange={handleInputChange} className="w-60 mt-3" required />
     </div>
+    <div className="grid w-full max-w-sm items-center mt-3 ">
+      <Label htmlFor="skills">Skills</Label>
+      <Input type="text" name="skills" placeholder="PHP, React Js, Python , Javascript" onChange={handleInputChange} className="w-60 mt-3" required />
+    </div>
+    <div className="grid w-full max-w-sm items-center mt-2">
+ 
+  <option value="" className="text-black" disabled>Ex Company</option>
+
+  {error && <p className="text-red-500">{error}</p>} 
+  <Select
+  defaultValue={selectedCompanyImageUrl}
+  aria-label="Searchable select"
+  required
+>
+<SelectTrigger className="w-[180px]">
+  {selectedCompany ? (
+    <div className="d-flex gap-2 items-center">
+      <img src={selectedCompanyImageUrl} className="w-10 h-10 inline-block rounded-full object-cover" />
+      <span>{selectedCompanyName}</span>
+    </div>
+  ) : (
+    <SelectValue placeholder="Select Company" />
+  )}
+</SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <div className="p-2.5">
+        <Input className="w-full" placeholder="Search..." type="search" />
+      </div>
+      {companyData.map((company, index) => (
+        <SelectItem key={company.image_url} value={company.image_url} onClick={() => handleCompanySelect(company.image_url)}>
+          <div
+            className="flex items-center gap-2"
+            
+          >
+            <img src={company.image_url} className="w-10 h-10 inline-block ml-2 rounded-full object-cover" />
+            <h2>{company.identifier.value}</h2>
+          </div>
+        </SelectItem>
+      ))}
+    </SelectGroup>
+  </SelectContent>
+</Select>
+
+
+</div>
+
+
 
     <div className="grid w-full max-w-sm items-center mt-3 ">
       <Label htmlFor="summary">Summary</Label>

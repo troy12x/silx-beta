@@ -3,7 +3,6 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3001;
 
 // Middleware
 app.use(bodyParser.json());
@@ -55,7 +54,7 @@ app.post('/api/organizations', async (req, res) => {
                 ]
             }
         };
-        
+
         const response = await axios.request(options);
         res.json(response.data);
     } catch (error) {
@@ -65,6 +64,6 @@ app.post('/api/organizations', async (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+const listener = app.listen(process.env.PORT || 3001, () => {
+    console.log(`Your app is listening on port ${listener.address().port}`);
 });
