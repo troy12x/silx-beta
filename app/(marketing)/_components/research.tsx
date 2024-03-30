@@ -10,16 +10,16 @@ export const Research = () => {
   };
   return (
     <div className=" px-10 pb-10 bg-white pt-4" >
-     <style jsx>{`
-        @layer utilities {
-          .selectable-text::selection {
-            background-color:black;
-            color: white;
-            height: max-content;
-            width: max-content;
-          }
-        }
-      `}</style>
+  <style jsx>{`
+  @layer utilities {
+    .selectable-text::selection {
+      background-color: black;
+      color: white;
+      height: max-content;
+      width: max-content;
+    }
+  }
+`}</style>
 <h1 className="text-black text-3xl text-left selectable-text"  style={navbarStyle}>Research</h1>
 <div className="flex flex-col md:flex-row justify-between gap-[2rem] pt-6">   
 <div className="w-[100%] md:w-[50%]">

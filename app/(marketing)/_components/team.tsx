@@ -10,16 +10,16 @@ export const Teams = () => {
   };
   return (
     <div className="pt-10 p-6 bg-white px-10 pb-10 " >
-          <style jsx>{`
-        @layer utilities {
-          .selectable-text::selection {
-            background-color:black;
-            color: white;
-            height: max-content;
-            width: max-content;
-          }
-        }
-      `}</style>
+       <style jsx>{`
+  @layer utilities {
+    .selectable-text::selection {
+      background-color: black;
+      color: white;
+      height: max-content;
+      width: max-content;
+    }
+  }
+`}</style>
       <h1 className="text-black text-3xl text-left selectable-text"  style={navbarStyle}>Our Founding team</h1>
      <div className="flex flex-col md:flex-row justify-center pt-7 items-center md:flex-row sm:flex-row lg:flex-row xl:flex-row">   
         <div className="flex flex-col  w-[100%] md:w-[30%]  pt-7 ">
