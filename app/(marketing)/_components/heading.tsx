@@ -24,7 +24,7 @@ export const Heading = () => {
 
     
        <div className="px-10 pb-10 ">
-         <style jsx>{`
+    <style jsx>{`
         .selectable-text::selection {
           background-color: white;
           color: black;
