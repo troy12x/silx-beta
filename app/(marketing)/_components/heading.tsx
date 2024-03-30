@@ -16,10 +16,9 @@ export const Heading = () => {
   const navbarStyle = {
     fontFamily: "Outfit",  // Apply the Outlift font here
   };
-
   return (
     <div className="px-10 pb-10 ">
-    <style jsx>{`
+      <style jsx>{`
         @layer utilities {
           .selectable-text::selection {
             background-color: white;
