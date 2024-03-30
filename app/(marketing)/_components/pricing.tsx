@@ -13,16 +13,17 @@ export const Pricing = () => {
   };
   return (
     <div className=" p-6 bg-white px-10 pb-10 " >
-         <style jsx>{`
-        @layer utilities {
-          .selectable-text::selection {
-            background-color:black;
-            color: white;
-            height: max-content;
-            width: max-content;
-          }
-        }
-      `}</style>
+<style jsx>{`
+  @layer utilities {
+    .selectable-text::selection {
+      background-color: black;
+      color: white;
+      height: max-content;
+      width: max-content;
+    }
+  }
+`}</style>
+
       <h1 className="text-black text-3xl text-left selectable-text"  style={navbarStyle}>Pricing</h1>
      <div className="flex flex-col md:flex-row  justify-center pt-7 items-center px-4">   
     
