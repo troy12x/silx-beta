@@ -17,7 +17,7 @@ export const Logo = () => {
   return (
     <div className="flex items-center justify-center border rounded-full bg-white px-5 py-2  text-black  text-center">
 
-    <h1 className="text-xl whitespace-nowrap text"  style={navbarStyle}>SILX INC.</h1>
+    <h1 className="text-xl whitespace-nowrap text"  style={navbarStyle}>SILX AI.</h1>
 </div>
 
 
