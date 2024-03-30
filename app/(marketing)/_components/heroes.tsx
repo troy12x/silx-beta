@@ -1,38 +1,54 @@
-import Image from "next/image";
+"use client";
 
+import Image from "next/image";
+import "@fontsource/outfit"; // Defaults to weight 400
+import Space from './space.png'
 export const Heroes = () => {
+  const navbarStyle = {
+    fontFamily: "Outfit",  // Apply the Outlift font here
+   
+  };
   return (
-    <div className="flex flex-col items-center justify-center max-w-5xl">
-      <div className="flex items-center">
-        <div className="relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] md:h-[400px] md:w-[400px]">
-          <Image
-            src="/documents.png"
-            fill
-            className="object-contain dark:hidden"
-            alt="Documents"
-          />
-          <Image
-            src="/documents-dark.png"
-            fill
-            className="object-contain hidden dark:block"
-            alt="Documents"
-          />
-        </div>
-        <div className="relative h-[400px] w-[400px] hidden md:block">
-          <Image
-            src="/reading.png"
-            fill
-            className="object-contain dark:hidden"
-            alt="Reading"
-          />
-          <Image
-            src="/reading-dark.png"
-            fill
-            className="object-contain hidden dark:block"
-            alt="Reading"
-          />
-        </div>
-      </div>
+    <div className=" px-10 pb-10 " >
+           <style jsx>{`
+        .selectable-text::selection {
+          background-color: white;
+          color: black;
+        }
+      `}</style>
+      <h1 className="text-white text-3xl text-left selectable-text"  style={navbarStyle}>AI Results</h1>
+     <div className="flex flex-col justify-between gap-[7rem] pt-3 md:flex-row">   
+   <div className=""> 
+   <Image
+    src={Space}
+    className="h-[510px] w-[510px] object-cover mt-5 selectable-text"
+    alt="Space"
+   />
+   </div>
+ <div>
+    <div className="flex flex-col pt-5">
+        <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>99%</h2>
+        <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
+            On Thursday, three Russian astronauts lifted off on the Moscow-17 spacecraft  <br />from the Sputnik 1 Satellite Launch Center deep in the Gobi Desert, heading for the Mir space station for a six-month stay.
+        </p>
+    </div>
+
+    <div className="flex flex-col pt-4">
+        <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>24%</h2>
+        <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
+            On Thursday, three Russian astronauts lifted off on the Moscow-17 spacecraft  <br />from the Sputnik 1 Satellite Launch Center deep in the Gobi Desert, heading for the Mir space station for a six-month stay.
+        </p>
+    </div>
+
+    <div className="flex flex-col pt-4">
+        <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>99%</h2>
+        <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
+            On Thursday, three Russian astronauts lifted off on the Moscow-17 spacecraft  <br />from the Sputnik 1 Satellite Launch Center deep in the Gobi Desert, heading for the Mir space station for a six-month stay.
+        </p>
+    </div>
+</div>
+
+     </div>
     </div>
   )
 }
