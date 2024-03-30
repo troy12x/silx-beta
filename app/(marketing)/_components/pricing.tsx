@@ -37,7 +37,7 @@ export const Pricing = () => {
                 <div className="text-left text-[#434343]">
                 /for-every
                 <br />
-                (+200 app's)
+                (+200 app&apos;s)
                 </div>
             </div>
    
@@ -239,7 +239,7 @@ The Start tier is designed for individuals and small businesses looking to explo
          <div className="text-left text-[#434343]">
          /for-every
          <br />
-         (+1000 app's)
+         (+1000 app&apos;s)
          </div>
      </div>
 
@@ -441,7 +441,7 @@ style={{
          <div className="text-left text-[#434343]">
          /for-every
          <br />
-         (+10,00 app's)
+         (+10,00 app&apos;s)
          </div>
      </div>
 

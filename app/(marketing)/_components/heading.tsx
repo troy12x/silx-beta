@@ -52,7 +52,7 @@ export const Heading = () => {
       <div className="flex flex-col justify-between gap-5 p-4 pt-8 md:flex-row">
         <p className="text-left text-white max-w-[100%] md:max-w-[60%] text-xl selectable-text" style={navbarStyle}>
           Revolutionizing Space Exploration: <br />
-          AIs Cosmic Odyssey.
+          AI&apos;s Cosmic Odyssey.
         </p>
         <p className="text-sm text-[#B3B3B3] max-w-[100%] md:max-w-[60%] text-left selectable-text" style={navbarStyle}>
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
