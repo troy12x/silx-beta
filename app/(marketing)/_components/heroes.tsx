@@ -9,7 +9,7 @@ export const Heroes = () => {
    
   };
   return (
-    <div className=" px-10 pb-10 " >
+    <div className=" px-10 pb-10 " id="results" >
             <style jsx>{`
         @layer utilities {
           .selectable-text::selection {

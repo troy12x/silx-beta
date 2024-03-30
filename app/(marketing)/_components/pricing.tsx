@@ -12,7 +12,7 @@ export const Pricing = () => {
    
   };
   return (
-    <div className=" p-6 bg-white px-10 pb-10 " >
+    <div className=" p-6 bg-white px-10 pb-10 " id="pricing" >
 <style jsx>{`
   @layer utilities {
     .selectable-text::selection {

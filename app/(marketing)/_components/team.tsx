@@ -9,7 +9,7 @@ export const Teams = () => {
    
   };
   return (
-    <div className="pt-10 p-6 bg-white px-10 pb-10 " >
+    <div className="pt-10 p-6 bg-white px-10 pb-10 " id="team" >
        <style jsx>{`
   @layer utilities {
     .selectable-text::selection {
