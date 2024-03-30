@@ -11,11 +11,13 @@ export const Heroes = () => {
   return (
     <div className=" px-10 pb-10 " >
             <style jsx>{`
-        .selectable-text::selection {
-          background-color: white;
-          color: black;
-          height: max-content;
-          width: max-content;
+        @layer utilities {
+          .selectable-text::selection {
+            background-color: white;
+            color: black;
+            height: max-content;
+            width: max-content;
+          }
         }
       `}</style>
       <h1 className="text-white text-3xl text-left selectable-text"  style={navbarStyle}>AI Results</h1>
