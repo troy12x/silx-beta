@@ -27,18 +27,18 @@ export const Individual = () => {
     }
   }
 `}</style>
-      <h1 className="text-black text-3xl text-center selectable-text"  style={navbarStyle}>Individual Need work? </h1>
+      <h1 className="text-black text-3xl text-center selectable-text"  style={navbarStyle}>Excited to work? </h1>
      <div className="flex flex-col justify-center pt-7 ">   
      
       <p className="text-center text-base px-40">
-      Are you facing job loss or searching for new opportunities? Join the SILX AI platform! Post your resume, showcase your work, and find a job in just 5 minutes. Connect with top employers and streamline your job search effortlessly with SILX AI
+      Left a terrible company? Forget that awful overlord. <br /> Join now and find a job in 5 minutes!
       </p>
     
   
         
      <Button variant="ghost" size="sm" asChild className="p-0 mt-4 bg-black text-white">
      <Link href="/individual">
-            Start for free
+            Have an Impact!
     </Link>
  
      </Button>
