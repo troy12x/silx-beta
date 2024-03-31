@@ -36,7 +36,7 @@ export const Individual = () => {
     
   
         
-      <Button className="rounded-full text-white flex justify-center items-center bg-black font-medium text-center py-6 px-20 relative ">
+     <Button variant="ghost" size="sm" asChild className="p-0 mt-4 bg-black text-white px-50">
      <Link href="/individual">
             Have an Impact!
     </Link>

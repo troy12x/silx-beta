@@ -40,14 +40,14 @@ export const Heroes = () => {
     <div className="flex flex-col pt-4">
         <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>100%</h2>
         <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
-            Customer-Focused, High-Quality, High-Quantity
+            Dedicated to Inspire  <br />Future Generations.
         </p>
     </div>
 
     <div className="flex flex-col pt-4">
         <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>100%</h2>
         <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
-            Dedicated to Inspire  <br />Future Generations.
+            Customer-Focused, <br />High-Quality, <br />High-Quantity
         </p>
     </div>
 </div>
