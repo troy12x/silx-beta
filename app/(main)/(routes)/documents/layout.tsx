@@ -5,7 +5,7 @@ import { useConvexAuth } from "convex/react";
 import { redirect } from "next/navigation";
 import { Spinner } from "@/components/spinner";
 import { SearchCommand } from "@/components/search-command";
-import { Navigation } from "./_components/navigation";
+import { Navigation } from "../../_components/navigation";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";

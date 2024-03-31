@@ -1,6 +1,7 @@
 import { Footer } from "./_components/footer";
 import { Heading } from "./_components/heading";
 import { Heroes } from "./_components/heroes";
+import { Individual } from "./_components/individual";
 import { Pricing } from "./_components/pricing";
 import { Research } from "./_components/research";
 import { Teams } from "./_components/team";
@@ -19,6 +20,7 @@ const MarketingPage = () => {
        <Teams/>
        <Research/>
        <Pricing/>
+       <Individual/>
       </div>
       <Footer />
     </div>

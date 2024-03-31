@@ -14,5 +14,13 @@ export default defineSchema({
     isPublished: v.boolean(),
   })
   .index("by_user", ["userId"])
-  .index("by_user_parent", ["userId", "parentDocument"])
+  .index("by_user_parent", ["userId", "parentDocument"]),
+  individual: defineTable({
+    individualName: v.string(),
+    userId: v.string(),
+    ProfileImage: v.optional(v.string()),
+
+  })
+  .index("by_user", ["userId"])
+
 });

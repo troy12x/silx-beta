@@ -29,16 +29,16 @@ export const Heading = () => {
         }
       `}</style>
       <h2 className="text-left text-6xl font-normal text-white selectable-text" style={navbarStyle}>
-        Introducing
+        SILX Today
       </h2>
       <p className="text-base text-left font-normal text-[#B3B3B3] pt-4 text-wrap selectable-text" style={navbarStyle}>
-        Today, SILX INC Launches SILX AI modules embarked on the LLM Product from the <br /> Cairo, Egypt near Manama Bahrain, to get into the Kickstart accelerator program, <br /> Lorem ipsum is amazing, six-month mission.
+        Today, SILX AI launches its first module to make hiring an effortless win-win situation.
       </p>
       {!isAuthenticated && !isLoading && (
         <div className="flex items-center pt-4 z-50">
           <SignInButton mode="modal">
             <Button className="bg-white text-black hover:text-white z-[999]">
-              Start for free
+              Jump!
               <ArrowUpRight className="h-6 w-6 ml-2" />
             </Button>
           </SignInButton>
@@ -51,11 +51,10 @@ export const Heading = () => {
 
       <div className="flex flex-col justify-between gap-5 p-4 pt-8 md:flex-row">
         <p className="text-left text-white max-w-[100%] md:max-w-[60%] text-xl selectable-text" style={navbarStyle}>
-          Revolutionizing Space Exploration: <br />
-          AI&apos;s Cosmic Odyssey.
+          Revolutionizing the Hiring Process
         </p>
         <p className="text-sm text-[#B3B3B3] max-w-[100%] md:max-w-[60%] text-left selectable-text" style={navbarStyle}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+          Fast, Efficient, Worth It
         </p>
       </div>
 
