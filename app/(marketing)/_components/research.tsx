@@ -20,31 +20,32 @@ export const Research = () => {
     }
   }
 `}</style>
-<h1 className="text-black text-3xl text-left selectable-text"  style={navbarStyle}>Research</h1>
+<h1 className="text-black text-3xl text-left selectable-text"  style={navbarStyle}>Innovation</h1>
 <div className="flex flex-col md:flex-row justify-between gap-[2rem] pt-6">   
 <div className="w-[100%] md:w-[50%]">
 <h1 className="text-black text-left text-3xl md:text-6xl  selectable-text" style={navbarStyle}>
- “AI ignites cosmic <br /> exploration, fueling our <br /> quest for understanding <br />and inspiring the next <br />frontier of discovery.”
+ “Change is constant. <br /> Make things better, <br /> not worse." <br /><br /> - Michael A. © 2024
  </h1>
  <div>
 
 <div>
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
- Space exploration has always been a captivating endeavor, pushing the boundaries of human knowledge and technological innovation. In recent years, </p>
+ Artifical Intelligence has always been a captivating endeavor, pushing the boundaries of human knowledge and technological innovation. In recent years, </p>
 </div>
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
- the integration of artificial intelligence (AI) has revolutionized how we explore the cosmos. This paper delves into the fascinating intersection of AI and space exploration, highlighting its current applications, future potential, and ethical considerations. </p>
+ the integration of Artificial Intelligence (AI) has revolutionized how we hire new employees. At SILX AI, we reinvent the recruiting, hiring and training process.
+  We ask ourselves questions like "What would make our customer happy?", and "How can we make this easier?". </p>
 </div>
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
- The vastness of space has intrigued humanity for centuries, driving us to reach for the stars in search of answers to profound questions about our universe. With the advent of AI technologies, space agencies and researchers have unlocked new possibilities for unraveling the mysteries of the cosmos. This paper explores the transformative impact of AI on space exploration and the exciting prospects it holds for the future.
+ The amount of unqualified employees and overqualified employers has intrigued us for decades, driving us to start SILX AI, to make the recruiting process cheap, fast, time-efficient and effortless.
  </p>
 </div>
 <div className="flex flex-col w-auto">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
- AI has already made significant contributions to various aspects of space exploration, from autonomous navigation systems on spacecraft to advanced image analysis techniques for identifying celestial objects. For example.
+ AI has already made significant contributions to various aspects of the world, from autonomous agents to solving mathematical problems. Why do people and companies still struggle to hire? We are here to change that.
  </p>
 </div>
 </div>
