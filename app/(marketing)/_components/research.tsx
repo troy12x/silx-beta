@@ -24,7 +24,11 @@ export const Research = () => {
 <div className="flex flex-col md:flex-row justify-between gap-[2rem] pt-6">   
 <div className="w-[100%] md:w-[50%]">
 <h1 className="text-black text-left text-3xl md:text-6xl  selectable-text" style={navbarStyle}>
+<<<<<<< HEAD
  “ Change is constant. <br /> Make things better, <br /> not worse. „ <br /> - Michael A. © 2024 
+=======
+ “Change is constant. <br /> Make things better, <br /> not worse." <br /><br /> - Michael A. © 2024
+>>>>>>> 9dfd209c0bb9b243f834ac2f47412f014add66bf
  </h1>
  <div>
 
@@ -36,7 +40,11 @@ export const Research = () => {
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
  the integration of Artificial Intelligence (AI) has revolutionized how we hire new employees. At SILX AI, we reinvent the recruiting, hiring and training process.
+<<<<<<< HEAD
   We ask ourselves questions like &quot;What would make our customer happy?&quot;, and &quotHow can we make this easier?&quot;. </p>
+=======
+  We ask ourselves questions like "What would make our customer happy?", and "How can we make this easier?". </p>
+>>>>>>> 9dfd209c0bb9b243f834ac2f47412f014add66bf
 </div>
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
