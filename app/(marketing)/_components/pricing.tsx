@@ -585,7 +585,7 @@ style={{
  style={{ color: '#fff' }}
 />
 </svg>
-Supports Data from 10000+ Applications.
+Supports Data from Many Applications.
 
      </li>
      <li className="flex gap-[0.4rem] mb-[15px] items-center"> 

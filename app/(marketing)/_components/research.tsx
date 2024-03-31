@@ -36,7 +36,7 @@ export const Research = () => {
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
  the integration of Artificial Intelligence (AI) has revolutionized how we hire new employees. At SILX AI, we reinvent the recruiting, hiring and training process.
-  We ask ourselves questions like &quot;What would make our customer happy?&quot;, and &quotHow can we make this easier?&quot;. </p>
+  We ask ourselves questions like &quot;What would make our customer happy?&quot;, and &quot;How can we make this easier?&quot;. </p>
 </div>
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
