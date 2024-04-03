@@ -36,7 +36,7 @@ export const Heading = () => {
       </p>
       {!isAuthenticated && !isLoading && (
         <div className="flex items-center pt-4 z-50">
-          <SignInButton mode="modal">
+          <SignInButton mode="modal" >
             <Button className="bg-white text-black hover:text-white z-[999]">
               Jump!
               <ArrowUpRight className="h-6 w-6 ml-2" />

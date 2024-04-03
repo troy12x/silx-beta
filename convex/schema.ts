@@ -16,10 +16,11 @@ export default defineSchema({
   .index("by_user", ["userId"])
   .index("by_user_parent", ["userId", "parentDocument"]),
   individual: defineTable({
-    individualName: v.string(),
+    individualTitle: v.string(),
+    skill:v.string(),
+    experience:v.string(),
     userId: v.string(),
-    ProfileImage: v.optional(v.string()),
-
+ //terst
   })
   .index("by_user", ["userId"])
 

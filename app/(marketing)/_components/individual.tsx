@@ -37,7 +37,7 @@ export const Individual = () => {
   
         
      <Button variant="ghost" size="sm" asChild className="p-0 mt-4 bg-black text-white">
-     <Link href="/individual">
+     <Link href="/pick">
             Start for free
     </Link>
  
