@@ -24,7 +24,7 @@ export const Research = () => {
 <div className="flex flex-col md:flex-row justify-between gap-[2rem] pt-6">   
 <div className="w-[100%] md:w-[50%]">
 <h1 className="text-black text-left text-3xl md:text-6xl  selectable-text" style={navbarStyle}>
- “ Change is constant. <br /> Make things better, <br /> not worse. „ 
+&quot; Change is constant. <br /> Make things better, <br /> not worse. &quot; 
 
  </h1>
  <h1 className="text-black text-left text-3xl md:text-6xl  selectable-text mt-5">  - Michael A. ©2024 

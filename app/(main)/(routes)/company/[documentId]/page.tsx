@@ -41,7 +41,15 @@ const Company = ({params}: CompanyProfileProps) => {
   const update = useMutation(api.company.update);                 
   const router = useRouter();
   const [showMatchedContent, setShowMatchedContent] = useState(false); // State to track if the matched content should be shown
-  const [updatedDocumentId, setUpdatedDocumentId] = useState<string | null>(null); // Local state to store the updated documentId
+  const [updatedDocumentId, setUpdatedDocumentId] = useState<string | null>(null);
+
+  
+useEffect(() => {
+  if (updatedDocumentId) {
+    router.push(`/company/${updatedDocumentId}/match`);
+  }
+}, [updatedDocumentId, router]);
+
 
   const onRedirect = () => {
     router.push(`/match`);
@@ -88,11 +96,6 @@ const Company = ({params}: CompanyProfileProps) => {
 
 };
 
-useEffect(() => {
-  if (updatedDocumentId) {
-    router.push(`/company/${updatedDocumentId}/match`);
-  }
-}, [updatedDocumentId, router]);
 
   if (documents === undefined) {
     return (
