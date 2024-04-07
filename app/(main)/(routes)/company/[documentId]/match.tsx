@@ -116,7 +116,7 @@ async function getAIResponse(matchedName: string, matchedEmail: string): Promise
     {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer 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`,
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
       }
     }
   );
