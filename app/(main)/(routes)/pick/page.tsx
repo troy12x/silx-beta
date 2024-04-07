@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 
 import { Doc, Id } from "@/convex/_generated/dataModel";
-import Match from "../company/[documentId]/match";
 
 interface PickProps {
   params: {
