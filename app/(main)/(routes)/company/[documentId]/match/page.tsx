@@ -102,11 +102,16 @@ const Match = ({ params }: MatchPageProps) => {
 
 export default Match;
 
+//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
+const OPENAI_API_KEY = "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"
 
 async function getAIResponse(matchedName: string, matchedEmail: string): Promise<string> {
   const prompt = `Congrats! You have been matched with ${matchedName}. His email is ${matchedEmail}.`;
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
   
+  await delay(1000);  // Delay for 1 second
   const response = await axios.post(
+    
     'https://api.openai.com/v1/completions',
     {
       model: 'gpt-3.5-turbo-instruct',
@@ -116,7 +121,7 @@ async function getAIResponse(matchedName: string, matchedEmail: string): Promise
     {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
       }
     }
   );
