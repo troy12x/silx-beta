@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/command'
 import { Command as CommandPrimitive, useCommandState } from 'cmdk'
 import { useEffect, forwardRef } from 'react'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/ui2/badge'
 import { cn } from '@/lib/utils'
 
 export interface Option {
