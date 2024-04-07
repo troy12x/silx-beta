@@ -102,7 +102,6 @@ const Match = ({ params }: MatchPageProps) => {
 
 export default Match;
 
-const OPENAI_API_KEY = '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';
 
 async function getAIResponse(matchedName: string, matchedEmail: string): Promise<string> {
   const prompt = `Congrats! You have been matched with ${matchedName}. His email is ${matchedEmail}.`;
@@ -117,7 +116,7 @@ async function getAIResponse(matchedName: string, matchedEmail: string): Promise
     {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
       }
     }
   );
