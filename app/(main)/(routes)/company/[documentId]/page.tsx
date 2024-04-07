@@ -16,7 +16,6 @@ import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 
 import { Doc, Id } from "@/convex/_generated/dataModel";
-import Match from "./match";
 
 interface CompanyProfileProps {
   params:{
