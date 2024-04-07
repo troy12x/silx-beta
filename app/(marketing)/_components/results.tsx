@@ -35,21 +35,21 @@ export const Results = () => {
     <div className="flex flex-col justify-center pt-5">
         <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>99%</h2>
         <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
-        We're proud to offer a 99% exact matching success rate for companies seeking to hire across a diverse range of categories. Whether you're in need of skilled software engineers, meticulous data analysts, or experienced lawyers.
+        We&apos;re proud to offer a 99% exact matching success rate for companies seeking to hire across a diverse range of categories. Whether you&apos;re in need of skilled software engineers, meticulous data analysts, or experienced lawyers.
         </p>
     </div>
 
     <div className="flex flex-col pt-4">
         <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>54%</h2>
         <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
-        We pride ourselves on efficiency. Our platform is a staggering 54% faster than the latest ChatGPT-4 Turbo model. Don't compromise on speed when seeking the perfect match for your company. With us, you'll experience swift and accurate results.
+        We pride ourselves on efficiency. Our platform is a staggering 54% faster than the latest ChatGPT-4 Turbo model. Don&apos;t compromise on speed when seeking the perfect match for your company. With us, you&apos;ll experience swift and accurate results.
         </p>
     </div>
 
     <div className="flex flex-col pt-4">
         <h2 className="text-white text-left text-6xl selectable-text" style={navbarStyle}>120</h2>
         <p className="text-[#B3B3B3] text-left text-base w-[100%] md:w-[80%] pt-4 selectable-text" style={navbarStyle}>
-        Exciting news from SILXAI ! We're thrilled to announce that our platform has facilitated over 120 successful connections, spanning a wide range of salary brackets from $40,000 to an impressive $340,000 USD, These connections represent valuable partnerships between companies and talented professionals
+        Exciting news from SILXAI ! We&apos;re thrilled to announce that our platform has facilitated over 120 successful connections, spanning a wide range of salary brackets from $40,000 to an impressive $340,000 USD, These connections represent valuable partnerships between companies and talented professionals
         </p>
     </div>
 </div>
