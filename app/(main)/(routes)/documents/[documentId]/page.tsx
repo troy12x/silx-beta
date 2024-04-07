@@ -51,6 +51,7 @@ const DocumentIdPage = ({
       id: params.documentId,
       content
     });
+   
     setValue(content);  // Update the value state
 
   };

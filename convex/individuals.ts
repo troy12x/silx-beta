@@ -10,7 +10,11 @@ export const create = mutation({
     individualTitle: v.string(),
     skill: v.string(),
     experience: v.string(),
-   
+    name:v.string(),
+    description:v.string(),
+    email:v.string(),
+    programmingLanguages: v.array(v.string()),
+
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -25,8 +29,11 @@ export const create = mutation({
       individualTitle: args.individualTitle,
       skill: args.skill,
       experience: args.experience,
-
+      name:args.name,
+      email:args.email,
+      programmingLanguages: args.programmingLanguages,
       userId,
+      description:args.description
     });
 
     return individual;
@@ -77,7 +84,50 @@ export const getIndividualById = query({
 
 
 
+export const getSidebar = query({
+  args: {
+   id: v.optional(v.id("individual"))
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
 
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = identity.subject;
+
+    const documents = await ctx.db
+      .query("individual")
+      .withIndex("by_user", (q) =>
+        q
+          .eq("userId", userId)
+   
+      )
+
+      .order("desc")
+      .collect();
+
+    return documents;
+  },
+});
+
+export const getTrash = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+
+
+
+    const documents = await ctx.db
+      .query("individual")
+
+      .order("desc")
+      .collect();
+
+    return documents;
+  }
+});
 
 export const get = query({
   args: { id: v.id("individual") },
@@ -136,13 +186,11 @@ export const getById = query({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
-    const individual = await ctx.db.get(args.id);
+    const document = await ctx.db.get(args.id);
 
-    if (!individual) {
+    if (!document) {
       throw new Error("Not found");
     }
-
-
 
     if (!identity) {
       throw new Error("Not authenticated");
@@ -150,32 +198,32 @@ export const getById = query({
 
     const userId = identity.subject;
 
-    if (individual.userId !== userId) {
+    if (document.userId !== userId) {
       throw new Error("Unauthorized");
     }
 
-    return individual;
+    return document;
   }
 });
+
+
 
 export const getIndividual = query({
   args: { id: v.id("individual") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
-    const individual = await ctx.db.get(args.id);
-
-    if (!individual) {
-      throw new Error("Not found");
-    }
-
-
-
     if (!identity) {
       throw new Error("Not authenticated");
     }
 
     const userId = identity.subject;
+
+    const individual = await ctx.db.get(args.id);
+
+    if (!individual) {
+      throw new Error("Individual not found");
+    }
 
     if (individual.userId !== userId) {
       throw new Error("Unauthorized");
@@ -185,13 +233,25 @@ export const getIndividual = query({
   }
 });
 
+export const getAll = query({
+  handler: async (ctx) => {
+    const individuals = await ctx.db.query("individual").collect();
+
+    return individuals;
+  },
+});
+
+
 export const update = mutation({
   args: {
     id: v.id("individual"),
-    individualTitle: v.optional(v.string()),
+    name:v.optional(v.string()),
+    email:v.optional(v.string()),
     skill: v.optional(v.string()),
     experience: v.optional(v.string()),
-    isPublished: v.optional(v.boolean())
+    description:v.optional(v.string()),
+    programmingLanguages: v.optional(v.array(v.string())),  // Add this line
+
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -201,8 +261,6 @@ export const update = mutation({
     }
 
     const userId = identity.subject;
-
-    const { id, ...rest } = args;
 
     const existingIndividual = await ctx.db.get(args.id);
 
@@ -215,7 +273,14 @@ export const update = mutation({
     }
 
     const individual = await ctx.db.patch(args.id, {
-      ...rest,
+
+      skill: args.skill,
+      experience: args.experience,
+      name:args.name,
+      email:args.email,
+      description:args.description,
+      programmingLanguages: args.programmingLanguages,  // Add this line
+
     });
 
     return individual;

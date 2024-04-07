@@ -1,4 +1,5 @@
-import { Navbar } from "./_components/navbar";
+import { ThemeProvider } from '@/providers/theme-provider'
+import { ClerkProvider } from "@clerk/clerk-react";
 
 const MarketingLayout = ({
   children
@@ -6,12 +7,20 @@ const MarketingLayout = ({
   children: React.ReactNode;
 }) => {
   return ( 
-    <div className="h-full dark:bg-[#1F1F1F]">
-      <Navbar />
-      <main className="h-full pt-5 bg-black">
-        {children}
-      </main>
-    </div>
+    
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+    
+         
+                {children}
+      
+        
+          </ThemeProvider>
+
    );
 }
  

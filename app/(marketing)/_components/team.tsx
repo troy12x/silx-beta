@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import "@fontsource/outfit"; // Defaults to weight 400
-import Space from './space.png'
+import Space from './ceo.jpg'
+import Eyad from './cto.jpg'
+import We from './we.jpg'
+
 export const Teams = () => {
   const navbarStyle = {
     fontFamily: "Outfit",  // Apply the Outlift font here
@@ -36,7 +39,7 @@ export const Teams = () => {
         </div>
         <div className="flex flex-col  w-[100%] md:w-[30%]  pt-7">
             <Image 
-            src={Space}
+            src={Eyad}
             className="rounded-xl h-[350px] w-[350px] object-cover"
             alt=""
             />
@@ -48,8 +51,8 @@ export const Teams = () => {
 
         <div className="flex flex-col  w-[100%] md:w-[30%] pt-7">
             <Image 
-            src={Space}
-            className="rounded-xl h-[350px] w-[350px] object-cover"
+            src={We}
+            className="rounded-xl h-[350px] w-[350px] object-over"
             alt=""
             />
           

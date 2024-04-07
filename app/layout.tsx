@@ -8,6 +8,7 @@ import { ModalProvider } from "@/components/providers/modal-provider";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 
 import './globals.css'
+import Navbar from "@/components/global/navbar";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -38,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+
         <ConvexClientProvider>
           <EdgeStoreProvider>
             <ThemeProvider
@@ -49,6 +51,7 @@ export default function RootLayout({
             >
               <Toaster position="bottom-center" />
               <ModalProvider />
+          
               {children}
             </ThemeProvider>
           </EdgeStoreProvider>
