@@ -200,44 +200,7 @@ const Editor = ({
     return usersData;
   };
 
-  const OPENAI_API_KEY = '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';
-  const handleChatInput = async () => {
-    setLoading(true);
-    try {
-      const usersData = await fetchDataFromFirestore();
-      const userDataText = usersData.map(user => `${user.name} ${user.age} ${user.email} ${user.summary} ${user.university}`).join(' ');
-      const prompt = `${chatInput} ${userDataText}`;
-    
-      const response = await axios.post(
-        'https://api.openai.com/v1/completions',
-        {
-          model: 'gpt-3.5-turbo-instruct',
-          prompt,
-          max_tokens: 150
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          }
-        }
-      );
-  
-      const answer = response.data.choices[0].text.trim();
-  
-      if (answer) {
-        setAiResponse(answer);
-        setShowDialog(true);
-      } else {
-        setAiResponse("We were unable to find a suitable answer. Please try again later.");
-      }
-    } catch (error) {
-      console.error('Error querying OpenAI:', error);
-      setError('Failed to fetch AI response. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   useEffect(() => {
     const fetchUserData = async () => {
