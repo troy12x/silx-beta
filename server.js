@@ -8,7 +8,6 @@ const app = express();
 app.use(bodyParser.json());
 
 // Define API user key
-const rapidAPIKey = '126e2cd957mshbd5ead3a2e18a5ap10fe39jsn8e82fd0268a2';
 
 // POST endpoint to fetch organization data
 app.post('/api/organizations', async (req, res) => {
@@ -18,7 +17,7 @@ app.post('/api/organizations', async (req, res) => {
             url: 'https://crunchbase-crunchbase-v1.p.rapidapi.com/searches/organizations',
             headers: {
                 'content-type': 'application/json',
-                'X-RapidAPI-Key': rapidAPIKey,
+                'X-RapidAPI-Key': process.env.rapidAPIKey,
                 'X-RapidAPI-Host': 'crunchbase-crunchbase-v1.p.rapidapi.com'
             },
             data: {
