@@ -351,6 +351,7 @@ export const getServer = mutation({
     return document;
   }
 });
+
 export const getById = query({
   args: { documentId: v.id("documents") },
   handler: async (ctx, args) => {

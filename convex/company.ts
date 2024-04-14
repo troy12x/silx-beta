@@ -20,6 +20,15 @@ export const create = mutation({
       }
   
       const userId = identity.subject;
+
+      const existingCompany = await ctx.db
+      .query("company")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    if (existingCompany) {
+      throw new Error("You already have an account. You need to create a new company account.");
+    }
   
       const company = await ctx.db.insert("company", {
         companyName: args.companyName,
@@ -127,9 +136,6 @@ export const getTrash = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
 
-
-
-
     const documents = await ctx.db
       .query("company")
 
@@ -139,6 +145,11 @@ export const getTrash = query({
     return documents;
   }
 });
+
+
+
+
+
 export const update = mutation({
     
   args: {

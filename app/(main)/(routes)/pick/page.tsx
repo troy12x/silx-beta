@@ -57,10 +57,9 @@ const PickComp = ({}: PickProps) => {
       })
       .then((documentId) => router.push(`/company/${documentId}`))
 
-
-
       toast.promise(promise, {
         loading: "Loading...",
+        error:"You already have an account. You need to create a new company account."
        
       });
   };
@@ -79,10 +78,13 @@ const PickComp = ({}: PickProps) => {
         individualTitle: "Individual",
         skill: "",
         experience: "",
+        score:"",
         email: "",
         name: "",
         description: "",
+        cv:"",
         programmingLanguages: [""],
+        githubToken:""
       })
       .then((documentId) => router.push(`/individuals/${documentId}`))
 
@@ -95,20 +97,20 @@ const PickComp = ({}: PickProps) => {
 
   return (
     <div className="h-full flex items-center justify-center">
-      <div className="w-2/3 space-y-6">
+      <div className="flex items-center justify-center gap-5">
         <div
         
           className="text-white cursor-pointer p-4 rounded bg-black"
           onClick={() => handleCompany()}
         >
-          Company
+         Currently Hiring
         </div>
 
         <div
           onClick={() => handleIndividual()}
           className="cursor-pointer p-4 border rounded"
         >
-          Individual
+         Looking for a job
         </div>
        
       </div>

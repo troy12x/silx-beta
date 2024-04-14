@@ -10,7 +10,6 @@ import {
   DialogHeader
 } from "@/components/ui/dialog";
 import { useCoverImage } from "@/hooks/use-cover-image";
-import { SingleImageDropzone } from "@/components/single-image-dropzone";
 import { useEdgeStore } from "@/lib/edgestore";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -59,12 +58,7 @@ export const CoverImageModal = () => {
             Cover Image
           </h2>
         </DialogHeader>
-        <SingleImageDropzone
-          className="w-full outline-none"
-          disabled={isSubmitting}
-          value={file}
-          onChange={onChange}
-        />
+       
       </DialogContent>
     </Dialog>
   );

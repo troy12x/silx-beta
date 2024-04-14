@@ -3,13 +3,24 @@
 import Image from "next/image";
 import "@fontsource/outfit"; // Defaults to weight 400
 import Space from './space.png'
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Doc, Id } from "@/convex/_generated/dataModel";
+import { redirect, useRouter } from "next/navigation";
+
 import { useConvexAuth } from "convex/react";
 import { ArrowLeftRight, ArrowRight, ArrowUp01, ArrowUpLeft, ArrowUpNarrowWide, ArrowUpRight, ArrowUpToLine,  } from "lucide-react";
 import Link from "next/link";
 import { SignInButton , RedirectToSignUp  } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
+
+
+
 export const Individual = () => {
-  const { isAuthenticated, isLoading } = useConvexAuth();
+
+
+
+
 
   const navbarStyle = {
     fontFamily: "Outfit",  // Apply the Outlift font here

@@ -21,9 +21,12 @@ export default defineSchema({
     name: v.string(),
     email: v.string(),
     experience: v.string(),
+    cv: v.optional(v.string()),
     description: v.string(),
     userId: v.string(),
-    programmingLanguages: v.array(v.string()),  // Array of strings
+    programmingLanguages: v.array(v.string()), 
+    githubToken:v.optional(v.string()), // Array of strings
+    score:v.string(),
   })
   .index("by_user", ["userId"]),
   company:defineTable({
@@ -33,6 +36,7 @@ export default defineSchema({
     lookingFor:v.string(),
     payingSalary:v.string(),
     userId: v.string(),
+
    
   })
   .index("by_user", ["userId"])

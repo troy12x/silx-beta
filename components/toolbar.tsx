@@ -40,6 +40,7 @@ export const Toolbar = ({
     }, 0);
   };
 
+
   const disableInput = () => setIsEditing(false);
 
   const onInput = (value: string) => {

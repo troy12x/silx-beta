@@ -118,8 +118,8 @@ useEffect(() => {
   return (
     <div>
 
-        <div className="h-full flex items-center justify-center mt-3">
-          <div className="w-2/3 space-y-6">
+        <div className="h-full flex items-center justify-center mt-20 ">
+          <div className="w-2/5 space-y-6">
             <div className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">

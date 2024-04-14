@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import { api } from "@/convex/_generated/api";
@@ -8,6 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { Textarea } from '@/components/ui/textarea';
+import { auth, githubProvider } from '../../../../../firebase'; // Adjust the path to your firebase.js file
+import { signInWithPopup, getAuth, GithubAuthProvider, signOut } from "firebase/auth";
+import { EdgeStoreProvider } from '@/lib/edgestore';
+import { FaGithub ,  } from "react-icons/fa6";
+import { useCoverCV } from '@/hooks/user-cv';
+import { CgFileDocument } from "react-icons/cg";
+import { CV } from '@/components/cv';
 
 interface IndividualProfileProps {
   params:{
@@ -19,23 +26,108 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
   const [yourName, setYourName] = useState("");
   const [yourEmail, setYourEmail] = useState("");
   const [yourDescription, setYourDescription] = useState("");
+  const [isCvUploaded, setIsCvUploaded] = useState(false);
 
   const [mainSkill, setMainSkill] = useState("Software Engineer");
   const [yearsOfExperience, setYearsOfExperience] = useState("0-1");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [programmingLanguages, setProgrammingLanguages] = useState<string[]>(["React"]); // Default with React
+  const [gitHubUsername, setGitHubUsername] = useState<string>("");
+  const [gitHubProfileImage, setGitHubProfileImage] = useState<string>("");
+  const [isGitHubConnected, setIsGitHubConnected] = useState(false); // New state variable
+  const [updatedDocumentId, setUpdatedDocumentId] = useState<string | null>(null);
 
   const update = useMutation(api.individuals.update);
+  const insert = useMutation(api.individuals.insert);
+  const logout = useMutation(api.individuals.logout);
   const router = useRouter();
+  const [showMatchedContent, setShowMatchedContent] = useState(false); // State to track if the matched content should be shown
 
   const documents = useQuery(api.individuals.getSidebar, {
-    id: params.documentId as Id<"individual">,
 
   });
+
+  const document = useQuery(api.individuals.getById, {
+    id: params.documentId
+  });
+
+  const coverCv = useCoverCV();
+ 
+  const onReplace = (url: string) => {
+    coverCv.onReplace(url);
+    setIsCvUploaded(true);
+  };
+  
+ useEffect(() => {
+  if (updatedDocumentId) {
+    router.push(`/individuals/${updatedDocumentId}/profile`);
+  }
+}, [updatedDocumentId, router]);
+
+
 
   if (documents === undefined) {
     return <div>Loading...</div>;
   }
+
+
+  const fetchGitHubUserInfo = async (accessToken: string) => {
+    const url = "https://api.github.com/user";
+    
+    const response = await fetch(url, {
+      headers: {
+        "Authorization": `token ${accessToken}`
+      }
+    });
+  
+    if (!response.ok) {
+      throw new Error("Failed to fetch GitHub user info");
+    }
+  
+    const data = await response.json();
+    return {
+      username: data.login,
+      profileImage: data.avatar_url
+    };
+  };
+
+  const handleGitHubConnect = async (documentId:string) => {
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      
+      // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      const githubToken = credential?.accessToken;
+  
+      if (githubToken) {
+        const githubUserInfo = await fetchGitHubUserInfo(githubToken);
+      
+        // Display GitHub user info (update state or whatever you prefer)
+        setGitHubUsername(githubUserInfo.username);
+        setGitHubProfileImage(githubUserInfo.profileImage);
+        setIsGitHubConnected(true); // Set the state to true when GitHub is connected
+
+      } else {
+        console.error("GitHub token is undefined");
+        // Handle the error, maybe show a message to the user
+      }
+
+      // Store the GitHub access token in your database using the insert mutation
+      const promise = insert({
+        id: params.documentId,
+        githubToken: githubToken
+      })
+  
+      toast.promise(promise, {
+        loading: "Loading...",
+      });
+  
+    } catch (error) {
+      console.error("GitHub authentication error:", error);
+      toast.error("Failed to authenticate with GitHub");
+    }
+  };
+  
 
   const handleSubmit = async (documentId: string) => {
 
@@ -46,10 +138,14 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
         skill: mainSkill,
         experience: yearsOfExperience,
         programmingLanguages,
-        description:yourDescription
+      
+        description:yourDescription,
       })
-      .then((documentId) => router.push(`/findjob/`))
-
+      .then(() => {
+        console.log("Company updated successfully:", documentId); // use response.id instead of documentId
+        setUpdatedDocumentId(documentId); // Store the updated documentId in local state
+        setShowMatchedContent(true); // Set the state to true when the promise resolves
+    })
       toast.promise(promise, {
         loading: "Loading...",
        
@@ -57,6 +153,37 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
     
     
   };
+
+
+
+  const handleLogout = async () => {
+    try {
+      const auth = getAuth();
+      await signOut(auth);
+  
+      // Remove GitHub token from your database using the update mutation
+      const promise = logout({
+        id: params.documentId,
+        githubToken: ""  // set the token to null or remove it completely
+      });
+  
+      toast.promise(promise, {
+        loading: "Logging out...",
+      });
+  
+      // Clear GitHub token from local state
+      setGitHubUsername("");
+      setGitHubProfileImage("");
+      setIsGitHubConnected(false); // Reset the state to false when logging out
+
+      // Redirect the user to the login page or do whatever you need after logout
+  
+    } catch (error) {
+      console.error("Error signing out:", error);
+      // Handle error, maybe show a message to the user
+    }
+  };
+  
 
   const handleAddLanguage = () => {
     if (selectedLanguage && !programmingLanguages.includes(selectedLanguage)) {
@@ -66,9 +193,12 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
   };
 
   return (
-    <div className="h-full flex items-center justify-center">
-      <div className="w-2/3 space-y-6">
+    <div className="h-full flex items-center justify-center h-[110vh]">
+      <div className="w-2/5 space-y-6">
         <div className="space-y-4">
+        
+       
+
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
               Name
@@ -144,6 +274,7 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
               <option value="5+">5+</option>
             </select>
           </div>
+       
           <div>
             <label htmlFor="programmingLanguage" className="block text-sm font-medium text-gray-700">
               Programming Languages
@@ -181,9 +312,32 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
               ))}
             </div>
           </div>
+          {!document?.cv && (
+              <Button onClick={coverCv.onOpen} className="text-muted-foreground text-sx gap-2" variant="outline" size="sm">
+             <CgFileDocument className="text-2xl" /> Upload CV
+           </Button>
+       )}
+        <CV url={document?.cv}/>
+        
+
+          {isGitHubConnected ? (
+           <div className="flex items-center justify-between">
+            <div className='flex items-center justify-start gap-4'>
+            <img src={gitHubProfileImage} alt="GitHub Profile" className='rounded-full' width="60" />
+              <p className='font-bold'>{gitHubUsername}</p>
+           </div>
+            <h2 className='text-red-500 cursor-pointer' onClick={handleLogout}>Logout</h2>
+            </div>
+          
+          ) : (
+            <div>
+            <Button onClick={() => handleGitHubConnect(documents[0]._id)} className="bg-black text-white px-4 py-2 rounded gap-2">
+            <FaGithub className='text-2xl'/>  Connect Github
+            </Button>
+          </div>
+            )}
           <Button
             onClick={() => handleSubmit(documents[0]._id)}
-            key={`${documents[0]._id}-data`}
             className="text-white px-4 py-2 rounded"
           >
             Submit

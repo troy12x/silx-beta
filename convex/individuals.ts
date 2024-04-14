@@ -12,9 +12,11 @@ export const create = mutation({
     experience: v.string(),
     name:v.string(),
     description:v.string(),
+    githubToken:v.optional(v.string()),
+    cv:v.optional(v.string()),
     email:v.string(),
     programmingLanguages: v.array(v.string()),
-
+    score:v.string()
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -23,6 +25,7 @@ export const create = mutation({
       throw new Error("Not authenticated");
     }
 
+
     const userId = identity.subject;
 
     const individual = await ctx.db.insert("individual", {
@@ -30,7 +33,10 @@ export const create = mutation({
       skill: args.skill,
       experience: args.experience,
       name:args.name,
+      cv:args.cv,
       email:args.email,
+      githubToken:args.githubToken,
+      score:args.score,
       programmingLanguages: args.programmingLanguages,
       userId,
       description:args.description
@@ -38,6 +44,105 @@ export const create = mutation({
 
     return individual;
   }
+});
+
+export const insert = mutation({
+  args: {
+    id: v.id("individual"),
+    githubToken: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingCompany = await ctx.db.get(args.id);
+
+    if (!existingCompany) {
+      throw new Error("Company not found");
+    }
+
+    if (existingCompany.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    // Validate the githubToken
+    if (!args.githubToken) {
+      throw new Error("GitHub token is required");
+    }
+
+    const company = await ctx.db.patch(args.id, {
+      githubToken: args.githubToken,
+    });
+
+    return company;
+  },
+});
+
+export const getGithub = query({
+  args: {
+    githubToken: (v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+
+    if ( userId) {
+      throw new Error("Unauthorized");
+    }
+
+    // Validate the githubToken
+    if (!args.githubToken) {
+      throw new Error("GitHub token is required");
+    }
+
+
+  },
+});
+
+
+
+export const logout = mutation({
+  args: {
+    id: v.id("individual"),
+    githubToken: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingCompany = await ctx.db.get(args.id);
+
+    if (!existingCompany) {
+      throw new Error("Company not found");
+    }
+
+    if (existingCompany.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+ 
+    const company = await ctx.db.patch(args.id, {
+      githubToken: args.githubToken,
+    });
+
+    return company;
+  },
 });
 
 export const manage = mutation({
@@ -86,13 +191,14 @@ export const getIndividualById = query({
 
 export const getSidebar = query({
   args: {
-   id: v.optional(v.id("individual"))
+   id: v.optional(v.id("individual")),
+   cv:v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw console.log('test');
     }
 
     const userId = identity.subject;
@@ -112,6 +218,11 @@ export const getSidebar = query({
   },
 });
 
+
+
+
+
+
 export const getTrash = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -128,6 +239,9 @@ export const getTrash = query({
     return documents;
   }
 });
+
+
+
 
 export const get = query({
   args: { id: v.id("individual") },
@@ -154,6 +268,9 @@ export const get = query({
     return individual;
   }
 });
+
+
+
 
 export const getServer = mutation({
   args: { id: v.id("individual") },
@@ -250,8 +367,9 @@ export const update = mutation({
     skill: v.optional(v.string()),
     experience: v.optional(v.string()),
     description:v.optional(v.string()),
-    programmingLanguages: v.optional(v.array(v.string())),  // Add this line
 
+    programmingLanguages: v.optional(v.array(v.string())),  // Add this line
+   
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -278,11 +396,87 @@ export const update = mutation({
       experience: args.experience,
       name:args.name,
       email:args.email,
+
+      userId,
       description:args.description,
       programmingLanguages: args.programmingLanguages,  // Add this line
-
+    
     });
 
     return individual;
   },
+});
+
+
+
+
+export const updateCV = mutation({
+  args: {
+    id: v.id("individual"),
+    name:v.optional(v.string()),
+    email:v.optional(v.string()),
+    skill: v.optional(v.string()),
+    experience: v.optional(v.string()),
+    description:v.optional(v.string()),
+    cv:v.optional(v.string()),
+    programmingLanguages: v.optional(v.array(v.string())),  // Add this line
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const { id, ...rest } = args;
+
+    const existingDocument = await ctx.db.get(args.id);
+
+    if (!existingDocument) {
+      throw new Error("Not found");
+    }
+
+    if (existingDocument.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const document = await ctx.db.patch(args.id, {
+      ...rest,
+    });
+
+    return document;
+  },
+});
+
+
+
+export const removeCV = mutation({
+  args: { id: v.id("individual") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingDocument = await ctx.db.get(args.id);
+
+    if (!existingDocument) {
+      throw new Error("Not found");
+    }
+
+    if (existingDocument.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const document = await ctx.db.patch(args.id, {
+      cv:undefined
+    });
+
+    return document;
+  }
 });
