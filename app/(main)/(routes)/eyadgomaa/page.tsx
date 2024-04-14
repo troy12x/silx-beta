@@ -4,6 +4,7 @@ import Image from "next/image";
 import "@fontsource/outfit"; // Defaults to weight 400
 import Navbar from "@/components/global/navbar";
 //just a blog test
+//dfd
 import Eyad from '../../../(marketing)/_components/eyad.jpg'
  const Blog = () => {
   const navbarStyle = {
