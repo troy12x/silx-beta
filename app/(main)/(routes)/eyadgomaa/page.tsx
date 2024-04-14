@@ -41,7 +41,7 @@ import Eyad from '../../../(marketing)/_components/eyad.jpg'
 </div>
 <div className="flex flex-col">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
-<b>The Early Years</b>:   Eyad Gomaa's story begins in Minya University, where his fascination with computers and technology first took root. Even at a young age, Gomaa demonstrated an exceptional aptitude for coding and programming, setting the stage for his future endeavors. </p>
+<b>The Early Years</b>:   Eyad Gomaa&apos;s story begins in Minya University, where his fascination with computers and technology first took root. Even at a young age, Gomaa demonstrated an exceptional aptitude for coding and programming, setting the stage for his future endeavors. </p>
 
 </div>
 <div className="flex flex-col">
@@ -51,7 +51,7 @@ import Eyad from '../../../(marketing)/_components/eyad.jpg'
 </div>
 <div className="flex flex-col w-auto">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
- <b>Revolutionizing Driver Education with Triv AI</b>: One of Gomaa's early ventures, Triv AI (also known as Driv AI), made waves in the industry by introducing the world's first AI-powered driving school. Leveraging cutting-edge AI algorithms, Triv AI transformed the way individuals learn to drive, making education more accessible, interactive, and effective.
+ <b>Revolutionizing Driver Education with Triv AI</b>: One of Gomaa&apos;s early ventures, Triv AI (also known as Driv AI), made waves in the industry by introducing the world&apos;s first AI-powered driving school. Leveraging cutting-edge AI algorithms, Triv AI transformed the way individuals learn to drive, making education more accessible, interactive, and effective.
  </p>
 </div>
 <div className="flex flex-col w-auto">
@@ -66,7 +66,7 @@ import Eyad from '../../../(marketing)/_components/eyad.jpg'
 </div>
 <div className="flex flex-col w-auto">
  <p className="text-black text-left text-base w-[80%] pt-4 selectable-text" style={navbarStyle}>
- <b>Conclusion</b>: In the ever-evolving landscape of technology, Eyad Gomaa stands as a beacon of innovation and ingenuity. From his early days as a computer enthusiast to his current role as a pioneering AI entrepreneur, Gomaa's journey exemplifies the transformative power of technology to shape the future. As he continues to push the boundaries of what's possible, one thing is certain: Eyad Gomaa's impact on the world of AI and entrepreneurship will be felt for years to come.
+ <b>Conclusion</b>: In the ever-evolving landscape of technology, Eyad Gomaa stands as a beacon of innovation and ingenuity. From his early days as a computer enthusiast to his current role as a pioneering AI entrepreneur, Gomaa&apos;s journey exemplifies the transformative power of technology to shape the future. As he continues to push the boundaries of what&apos;s possible, one thing is certain: Eyad Gomaa&apos;s impact on the world of AI and entrepreneurship will be felt for years to come.
  </p>
 </div>
 </div>
