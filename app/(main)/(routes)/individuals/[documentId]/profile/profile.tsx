@@ -14,6 +14,14 @@ import axios from 'axios';
 
 
 import { toast } from "sonner";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 interface ToolbarProps {
   initialData: Doc<"individual">;
@@ -30,6 +38,7 @@ export const EditProfile = ({
   const [score, setScore] = useState(0);
   const [aiResponse, setAiResponse] = useState("");
   const [pdfText, setPdfText] = useState<string>("");
+  const [level, setLevel] = useState("");
 
   const initialPdfUrl = initialData.cv;
   const [pdfUrl, setPdfUrl] = useState(initialPdfUrl);
@@ -105,6 +114,61 @@ export const EditProfile = ({
         console.error(error);
       }
     };
+    const level = async () => {
+      try {
+
+        if (!initialData.cv) {
+          // Handle case where CV URL is not available
+          console.error('CV URL is not available');
+          toast.error('Failed to fetch CV: CV URL is not available');
+          return;
+        }
+
+        if (!pdfText) {
+          // Wait for the PDF text to be fetched
+          return;
+        }
+
+        const text = `
+        Using 
+        User Information:
+        Name: ${initialData.name}
+        Description: ${initialData.description}
+        Programming Languages: ${initialData.programmingLanguages.join(", ")}
+        Main Skill: ${initialData.skill}
+        
+       Aand read CV Text:
+        ${pdfText}
+        
+        give the user a level based on his information and and his cv if he is a Intern-level ${initialData.skill} or Junior-level ${initialData.skill} or Mid-level ${initialData.skill} Senior-level ${initialData.skill} in the answer only give the level title in the answer dont say Based on the information provided, the user appears to be a
+       `;
+        // API request to OpenAI for analysis
+        const OPENAI_API_KEY = "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";
+        const response = await fetch("https://api.openai.com/v1/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo-instruct",
+            prompt: text,
+            max_tokens: 300, // Adjust as needed
+          }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          const aiResponseText = data.choices[0].text.trim();
+          setAiResponse(aiResponseText);
+        } else {
+          throw new Error("Failed to analyze text");
+        }
+      } catch (error) {
+        console.error("Error analyzing text:", error);
+        toast.error("Failed to analyze text");
+      }
+    }
     const calculateScore = async () => {
       try {
 
@@ -139,7 +203,7 @@ export const EditProfile = ({
   
   
         // API request to OpenAI for analysis
-        const OPENAI_API_KEY = "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";
+        const OPENAI_API_KEY = "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";
         const response = await fetch("https://api.openai.com/v1/completions", {
           method: "POST",
           headers: {
@@ -155,8 +219,8 @@ export const EditProfile = ({
   
         if (response.ok) {
           const data = await response.json();
-          const aiResponseText = data.choices[0].text.trim();
-          setAiResponse(aiResponseText);
+          const level = data.choices[0].text.trim();
+          setLevel(level);
         } else {
           throw new Error("Failed to analyze text");
         }
@@ -170,6 +234,10 @@ export const EditProfile = ({
 
     if (pdfUrl) {
       fetchPdfText();
+    }
+
+    if(pdfUrl) {
+      level();
     }
   
     if (!preview) {
@@ -195,22 +263,23 @@ export const EditProfile = ({
 
       <div className="text-container">{text}</div>
 
+  <div className="flex items-center justify-center">
+  <div className="grid grid-cols-4 gap-4 w-[100%] p-5">
+  {userRepositories.map((repository, index) => (
+    <div key={index} className="border border-gray-200 p-4 rounded-md">
+      <h3 className="font-semibold">{repository.name}</h3>
+      <p>{repository.homepage}</p>
+      {/* Additional content here if needed */}
+    </div>
+  ))}
+</div>
+  </div>
 
-          {initialData.score}
-       {userRepositories.map((repository, index) => (
-          <div key={index}>
-            {repository.name}
-            <div>
-              {repository.description}
-            </div>
 
-            {repository.score}
-          
-          </div>
-        ))}
         <div>
         <h2>AI Response:</h2>
         <p>{aiResponse}</p>
+        <p>{level}</p>
         
       </div>
     </div>

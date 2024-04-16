@@ -39,6 +39,7 @@ export const CV = ({url,preview,path}:CVProps) => {
     }
     removeCv({
       id: params.documentId as Id<"individual">
+      
     })
    }
 

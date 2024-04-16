@@ -43,7 +43,7 @@ const Match = ({ params }: MatchPageProps) => {
 
 
 //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
-const OPENAI_API_KEY = "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"
+const OPENAI_API_KEY = "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"
 
 const insert = useMutation(api.company.insert);
  

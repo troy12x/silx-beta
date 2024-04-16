@@ -425,6 +425,7 @@ export const updateCV = mutation({
     experience: v.optional(v.string()),
     description:v.optional(v.string()),
     cv:v.optional(v.string()),
+
     programmingLanguages: v.optional(v.array(v.string())),  // Add this line
   },
   handler: async (ctx, args) => {
@@ -459,7 +460,12 @@ export const updateCV = mutation({
 
 
 export const removeCV = mutation({
-  args: { id: v.id("individual") },
+  args: {
+     id: v.id("individual"),
+   
+
+  }, 
+  
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
