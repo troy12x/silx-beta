@@ -11,6 +11,8 @@ export const create = mutation({
       companySize: v.string(),
       lookingFor: v.string(),
       payingSalary: v.string(),
+      reqExp:v.string(),
+      filters:v.string(),
     },
     handler: async (ctx, args) => {
       const identity = await ctx.auth.getUserIdentity();
@@ -35,7 +37,9 @@ export const create = mutation({
         companyDescription: args.companyDescription,
         companySize: args.companySize,
         lookingFor: args.lookingFor,
+        filters:args.filters,
         payingSalary: args.payingSalary,
+        reqExp:args.reqExp,
         userId,
       });
   
@@ -159,6 +163,8 @@ export const update = mutation({
     companySize: v.string(),
     lookingFor: v.string(),
     payingSalary: v.string(),
+    reqExp:v.string(),
+    filters:v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -189,7 +195,45 @@ export const update = mutation({
       companyDescription: args.companyDescription,
       companySize: args.companySize,
       lookingFor: args.lookingFor,
+      filters:args.filters,
+      reqExp:args.reqExp,
       payingSalary: args.payingSalary,
+    });
+
+    return company;
+  },
+});
+
+
+
+export const insert = mutation({
+  args: {
+    id: v.id("company"),
+    filters:v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingCompany = await ctx.db.get(args.id);
+
+    if (!existingCompany) {
+      throw new Error("Company not found");
+    }
+
+    if (existingCompany.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+ 
+
+    const company = await ctx.db.patch(args.id, {
+      filters: args.filters,
     });
 
     return company;

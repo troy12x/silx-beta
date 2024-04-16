@@ -21,7 +21,7 @@ export default defineSchema({
     name: v.string(),
     email: v.string(),
     experience: v.string(),
-    cv: v.optional(v.string()),
+    cv: v.string(),
     description: v.string(),
     userId: v.string(),
     programmingLanguages: v.array(v.string()), 
@@ -36,7 +36,8 @@ export default defineSchema({
     lookingFor:v.string(),
     payingSalary:v.string(),
     userId: v.string(),
-
+    reqExp:v.string(),
+    filters:v.string(),
    
   })
   .index("by_user", ["userId"])

@@ -13,7 +13,7 @@ export const create = mutation({
     name:v.string(),
     description:v.string(),
     githubToken:v.optional(v.string()),
-    cv:v.optional(v.string()),
+    cv:v.string(),
     email:v.string(),
     programmingLanguages: v.array(v.string()),
     score:v.string()
@@ -307,7 +307,7 @@ export const getById = query({
 
     if (!document) {
       throw new Error("Not found");
-    }
+    } 
 
     if (!identity) {
       throw new Error("Not authenticated");
@@ -362,14 +362,14 @@ export const getAll = query({
 export const update = mutation({
   args: {
     id: v.id("individual"),
-    name:v.optional(v.string()),
-    email:v.optional(v.string()),
+    name:v.string(),
+    email:v.string(),
     skill: v.optional(v.string()),
     experience: v.optional(v.string()),
-    description:v.optional(v.string()),
-
+    description:v.string(),
+    score:v.optional(v.string()),
     programmingLanguages: v.optional(v.array(v.string())),  // Add this line
-   
+
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -390,13 +390,19 @@ export const update = mutation({
       throw new Error("Unauthorized");
     }
 
+    if (!args.name || !args.email || !args.description ) {
+      throw new Error("Required fields cannot be empty");
+    }
+
+
     const individual = await ctx.db.patch(args.id, {
 
       skill: args.skill,
       experience: args.experience,
       name:args.name,
       email:args.email,
-
+      score:args.score,
+    
       userId,
       description:args.description,
       programmingLanguages: args.programmingLanguages,  // Add this line

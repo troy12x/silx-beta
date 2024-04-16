@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
@@ -15,6 +16,11 @@ import { FaGithub ,  } from "react-icons/fa6";
 import { useCoverCV } from '@/hooks/user-cv';
 import { CgFileDocument } from "react-icons/cg";
 import { CV } from '@/components/cv';
+import { useConvexAuth } from "convex/react";
+import { redirect } from "next/navigation";
+import { Spinner } from "@/components/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Cover } from "@/components/cover";
 
 interface IndividualProfileProps {
   params:{
@@ -27,29 +33,35 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
   const [yourEmail, setYourEmail] = useState("");
   const [yourDescription, setYourDescription] = useState("");
   const [isCvUploaded, setIsCvUploaded] = useState(false);
-
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const [cv,isCv] = useState("");
   const [mainSkill, setMainSkill] = useState("Software Engineer");
   const [yearsOfExperience, setYearsOfExperience] = useState("0-1");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [programmingLanguages, setProgrammingLanguages] = useState<string[]>(["React"]); // Default with React
   const [gitHubUsername, setGitHubUsername] = useState<string>("");
+  const [score,setScore] = useState<string>("0");
   const [gitHubProfileImage, setGitHubProfileImage] = useState<string>("");
   const [isGitHubConnected, setIsGitHubConnected] = useState(false); // New state variable
   const [updatedDocumentId, setUpdatedDocumentId] = useState<string | null>(null);
+  const [showMatchedContent, setShowMatchedContent] = useState(false);
+ 
+  const document = useQuery(api.individuals.getById, {
+    id: params.documentId
+  });
 
   const update = useMutation(api.individuals.update);
   const insert = useMutation(api.individuals.insert);
   const logout = useMutation(api.individuals.logout);
   const router = useRouter();
-  const [showMatchedContent, setShowMatchedContent] = useState(false); // State to track if the matched content should be shown
 
-  const documents = useQuery(api.individuals.getSidebar, {
+  if (!isAuthenticated) {
+     
+  }
 
-  });
 
-  const document = useQuery(api.individuals.getById, {
-    id: params.documentId
-  });
+
+  
 
   const coverCv = useCoverCV();
  
@@ -61,15 +73,27 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
  useEffect(() => {
   if (updatedDocumentId) {
     router.push(`/individuals/${updatedDocumentId}/profile`);
+
   }
 }, [updatedDocumentId, router]);
 
 
+if (document === undefined) {
+  return (
+    <div>
+      <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-10">
+        <div className="space-y-4 pl-8 pt-4">
+          <Skeleton className="h-14 w-[50%]" />
+          <Skeleton className="h-14 w-[40%]" />
 
-  if (documents === undefined) {
-    return <div>Loading...</div>;
-  }
-
+        </div>
+      </div>
+    </div>
+  );
+}
+if (document === null) {
+  return <div>Not found</div>
+}
 
   const fetchGitHubUserInfo = async (accessToken: string) => {
     const url = "https://api.github.com/user";
@@ -131,6 +155,8 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
 
   const handleSubmit = async (documentId: string) => {
 
+
+
       const promise =  update({
         id: params.documentId,
         name: yourName,
@@ -138,24 +164,30 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
         skill: mainSkill,
         experience: yearsOfExperience,
         programmingLanguages,
-      
+        score:score,
         description:yourDescription,
+      
       })
       .then(() => {
-        console.log("Company updated successfully:", documentId); // use response.id instead of documentId
         setUpdatedDocumentId(documentId); // Store the updated documentId in local state
         setShowMatchedContent(true); // Set the state to true when the promise resolves
-    })
+    }).catch((error) => {
+  
+      console.error("Update error:", error);
+  });
+
+  if (!yourName || !yourDescription ) {
+    toast.error("Please fill out all the required fields.");
+    return;
+}
+
       toast.promise(promise, {
         loading: "Loading...",
        
       });
-    
+   
     
   };
-
-
-
   const handleLogout = async () => {
     try {
       const auth = getAuth();
@@ -205,7 +237,7 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
             </label>
             <Input
               type="text"
-        
+              required
               name="name"
               value={yourName}
               placeholder="Enter your name"
@@ -331,13 +363,13 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
           
           ) : (
             <div>
-            <Button onClick={() => handleGitHubConnect(documents[0]._id)} className="bg-black text-white px-4 py-2 rounded gap-2">
+            <Button onClick={() => handleGitHubConnect(document._id)} className="bg-black text-white px-4 py-2 rounded gap-2">
             <FaGithub className='text-2xl'/>  Connect Github
             </Button>
           </div>
             )}
           <Button
-            onClick={() => handleSubmit(documents[0]._id)}
+            onClick={() => handleSubmit(document._id)}
             className="text-white px-4 py-2 rounded"
           >
             Submit

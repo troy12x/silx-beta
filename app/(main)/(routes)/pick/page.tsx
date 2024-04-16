@@ -54,6 +54,8 @@ const PickComp = ({}: PickProps) => {
         companySize: "",
         lookingFor: "",
         payingSalary: "",
+        reqExp:"",
+        filters:""
       })
       .then((documentId) => router.push(`/company/${documentId}`))
 

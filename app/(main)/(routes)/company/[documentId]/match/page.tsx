@@ -1,13 +1,17 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useQuery } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import Image from 'next/image';
 import axios from 'axios';
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { SendIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 type Individual = {
   _id: Id<"individual">;
@@ -30,54 +34,38 @@ interface MatchPageProps {
 
 const Match = ({ params }: MatchPageProps) => {
   const [aiResponse, setAiResponse] = useState<string | null>(null);
+  const [yourFilter, setYourFilter] = useState("");
+  
   const individuals = useQuery(api.individuals.getAll);
   const document = useQuery(api.company.getById, {
     id: params?.documentId // use optional chaining to safely access properties
   });
 
-  useEffect(() => {
-    if (!params) {
-      console.error("documentId is missing");
-      return;
-    }
 
-    if (!document) {
-      return;
-    }
+//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
+const OPENAI_API_KEY = "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"
 
-    if (!individuals) {
-      return;
-    }
+const insert = useMutation(api.company.insert);
+ 
+const handleInert = () => {
+  try {
+    const promise = insert({
+      id: params.documentId,
+      filters: yourFilter
+    })
 
-    const fetchMatch = async () => {
-      try {
-        const prompt = `Fetch all individuals from the table with skills: ${document.lookingFor}`;
-        const aiText = await getAIResponse("Name Placeholder", "Email Placeholder");
+    toast.promise(promise, {
+      loading: "Loading...",
+      success:"It has been sent successfully. Searching for match"
+    });
 
-        const matchedIndividuals = individuals
-          .filter((individual: Individual) => 
-            individual.programmingLanguages.some(skill => document.lookingFor.includes(skill))
-          )
-          .map((individual: Individual) => ({
-            ...individual,
-            score: scoreIndividual(individual)
-          }));
+  }catch (error) {
+    console.error("error sending your filters:", error);
+    toast.error("Error sending your filters");
+  }
+}
 
-        const bestMatch = matchedIndividuals.reduce((prev, current) => 
-          (prev.score > current.score) ? prev : current
-        , matchedIndividuals[0]);
-
-        console.log('Best Match:', bestMatch);
-
-        const finalAiText = await getAIResponse(bestMatch.name, bestMatch.email);
-        setAiResponse(finalAiText);
-      } catch (error) {
-        console.error('Error fetching AI response:', error);
-      }
-    };
-
-    fetchMatch();
-  }, [params, document, individuals]);
+  
 
   if (!params || !document || !individuals) {
     return <div>Loading...</div>;
@@ -88,76 +76,45 @@ const Match = ({ params }: MatchPageProps) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center mt-10">
-      <h2 className="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
-        <span>
-          Hello <span className='font-bold'>{document.companyName}</span>
+   <div>
+        <div className="flex flex-col items-center justify-center mt-10">
+      <h2 className="flex items-center space-x-4 bg-black p-4 rounded-3xl">
+        <span className='text-white'>
+          Hello <span >{document.companyName}</span>
         </span>
       </h2>
-      <p className="mt-4 text-gray-600">This is what we matched you with</p>
-      {aiResponse && <div className="mt-4">{aiResponse}</div>}
+ 
     </div>
+   <div className='h-full flex items-center justify-center mt-3'> 
+   <div className='max-w-lg w-full flex items-center space-x-4 border border-gray-200 rounded-full px-4 py-2 '>
+ 
+     <Input
+        type="text"
+        required
+        name="name"
+        onChange={(e) => setYourFilter(e.target.value)}
+        value={yourFilter}
+        placeholder="Enter your needs to silx ai"
+        id="name"
+        className="mt-1 block w-full  border-none rounded-full focus:outline-none"
+      />
+        <Button
+          onClick={() => handleInert()} 
+        className="text-white px-4 py-2 rounded-full ">
+           <SendIcon className='w-6 h-5'/>
+        </Button>
+
+    </div>
+   </div>
+   <div className='flex items-center justify-center'>
+   <p className="mt-4 text-gray-600">This is what we matched you with</p>
+      {aiResponse && <div className="mt-4">{aiResponse}</div>}
+    
+    
+   </div>
+   </div>
+    
   );
 };
 
 export default Match;
-
-//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
-const OPENAI_API_KEY = "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"
-
-async function getAIResponse(matchedName: string, matchedEmail: string): Promise<string> {
-  const prompt = `Congrats! You have been matched with ${matchedName}. His email is ${matchedEmail}.`;
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-  
-  await delay(1000);  // Delay for 1 second
-  const response = await axios.post(
-    
-    
-    'https://api.openai.com/v1/completions',
-    {
-      model: 'gpt-3.5-turbo-instruct',
-      prompt,
-      max_tokens: 150
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-      }
-    }
-  );
-
-  if (response && response.data && response.data.choices && response.data.choices[0]) {
-    return `Congrats! You have been matched with ${matchedName}. His email is ${matchedEmail}. ${response.data.choices[0].text.trim()}`;
-  }
-
-  throw new Error('Failed to get AI response');
-}
-
-function scoreIndividual(individual: Individual): number {
-  let score = 0;
-
-  // Score based on programming languages
-  if (individual.programmingLanguages.length > 4) {
-    score += 1;
-  } else {
-    score -= 1;
-  }
-
-  // Score based on experience
-  const calculateScore = (experience: string): number => {
-    if (experience === "5+") {
-      return 3;
-    } else if (experience === "1-3+") {
-      return 1;
-    } else if (experience === "3-5") {
-      return 2;
-    } else if (experience === "0-1") {
-      return -1;
-    } else {
-      return 0; // default score
-    }
-  };
-
-  return score;
-}

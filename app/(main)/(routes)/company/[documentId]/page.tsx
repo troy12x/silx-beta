@@ -32,6 +32,8 @@ const Company = ({params}: CompanyProfileProps) => {
   });
   const [yourCompanyName, setYourCompanyName] = useState("");
   const [yourCompanyDescription, setYourCompanyDescription] = useState("");
+  const [requiredexperience, setExperience] = useState("0-1");
+  const [yourFilter, setYourFilter] = useState("");
 
   const [YourlookingFor, setLookingFor] = useState("Software Engineer");
   const [YourpayingSalary, setYourPayingSalary] = useState("$50,000 - $75,000");
@@ -43,7 +45,8 @@ const Company = ({params}: CompanyProfileProps) => {
   const [showMatchedContent, setShowMatchedContent] = useState(false); // State to track if the matched content should be shown
   const [updatedDocumentId, setUpdatedDocumentId] = useState<string | null>(null);
 
-  
+  const documents = useQuery(api.company.getTrash, {});
+
 useEffect(() => {
   if (updatedDocumentId) {
     router.push(`/company/${updatedDocumentId}/match`);
@@ -56,7 +59,6 @@ useEffect(() => {
   };
      
   
-  const documents = useQuery(api.company.getTrash, {});
 
   if (documents === undefined) {
     return <div>Loading...</div>;
@@ -73,10 +75,13 @@ useEffect(() => {
     const promise = update({
         id: params.documentId,
         companyName: yourCompanyName,
+        reqExp: requiredexperience,
         companyDescription: yourCompanyDescription,
         companySize: yourCompanySize,
         lookingFor: YourlookingFor,
-        payingSalary: YourpayingSalary
+        payingSalary: YourpayingSalary,
+        filters:yourFilter
+      
     })
      
     .then(() => {
@@ -177,6 +182,22 @@ useEffect(() => {
                   <option value="11-50 employees">11-50 employees</option>
                   <option value="51-250 employees">51-250 employees</option>
                   <option value="251-500 employees">251-500 employees</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="yearsOfExperience" className="block text-sm font-medium text-gray-700">
+                Required Experience
+                </label>
+                <select
+                  value={requiredexperience}
+                  onChange={(e) => setExperience(e.target.value)}
+                  id="yearsOfExperience"
+                  className="mt-1 block w-full py-2 px-3 border rounded-md"
+                >
+                  <option value="Intern-level engineers">Intern-level engineers</option>
+                  <option value="Junior-level engineers">Junior-level engineers</option>
+                  <option value="Mid-level engineers">Mid-level engineers</option>
+                  <option value="Senior-level engineers">Senior-level engineers</option>
                 </select>
               </div>
               <div>
