@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SendIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import Dashboard from '@/components/component/dash';
 
 type Individual = {
   _id: Id<"individual">;
@@ -35,11 +36,18 @@ interface MatchPageProps {
 const Match = ({ params }: MatchPageProps) => {
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const [yourFilter, setYourFilter] = useState("");
-  
+  const [showContent, setShowContent] = useState(false);
+
   const individuals = useQuery(api.individuals.getAll);
   const document = useQuery(api.company.getById, {
     id: params?.documentId // use optional chaining to safely access properties
   });
+
+  
+  const handleButtonClick = () => {
+    
+  };
+
 
 
 //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
@@ -54,10 +62,13 @@ const handleInert = () => {
       filters: yourFilter
     })
 
+    
+
     toast.promise(promise, {
       loading: "Loading...",
       success:"It has been sent successfully. Searching for match"
     });
+
 
   }catch (error) {
     console.error("error sending your filters:", error);
@@ -77,41 +88,10 @@ const handleInert = () => {
 
   return (
    <div>
-        <div className="flex flex-col items-center justify-center mt-10">
-      <h2 className="flex items-center space-x-4 bg-black p-4 rounded-3xl">
-        <span className='text-white'>
-          Hello <span >{document.companyName}</span>
-        </span>
-      </h2>
- 
-    </div>
-   <div className='h-full flex items-center justify-center mt-3'> 
-   <div className='max-w-lg w-full flex items-center space-x-4 border border-gray-200 rounded-full px-4 py-2 '>
- 
-     <Input
-        type="text"
-        required
-        name="name"
-        onChange={(e) => setYourFilter(e.target.value)}
-        value={yourFilter}
-        placeholder="Enter your needs to silx ai"
-        id="name"
-        className="mt-1 block w-full  border-none rounded-full focus:outline-none"
-      />
-        <Button
-          onClick={() => handleInert()} 
-        className="text-white px-4 py-2 rounded-full ">
-           <SendIcon className='w-6 h-5'/>
-        </Button>
+     
+  <Dashboard/>
+  
 
-    </div>
-   </div>
-   <div className='flex items-center justify-center'>
-   <p className="mt-4 text-gray-600">This is what we matched you with</p>
-      {aiResponse && <div className="mt-4">{aiResponse}</div>}
-    
-    
-   </div>
    </div>
     
   );

@@ -6,6 +6,7 @@ import {
   LucideIcon,
   MoreHorizontal,
   Plus,
+  
   Trash
 } from "lucide-react";
 import { useMutation } from "convex/react";
@@ -33,14 +34,14 @@ interface ItemProps {
   isSearch?: boolean;
   level?: number;
   onExpand?: () => void;
-  label: string;
+
   onClick?: () => void;
   icon: LucideIcon;
 };
 
 export const Item = ({
   id,
-  label,
+  
   onClick,
   icon: Icon,
   active,
@@ -104,29 +105,30 @@ export const Item = ({
       onClick={onClick}
       role="button"
       style={{ 
-        paddingLeft: level ? `${(level * 12) + 12}px` : "12px"
       }}
       className={cn(
-        "group min-h-[27px] text-sm py-1 pr-3 w-full hover:bg-primary/5 flex items-center text-muted-foreground font-medium",
-        active && "bg-primary/5 text-primary"
+        "h-[65px] text-lg py-1  flex items-center justify-center text-muted-foreground font-medium",
+        
       )}
     >
     
-      {documentIcon ? (
-        <div className="shrink-0 mr-2 text-[18px]">
+     <div className={cn(
+       "h-[50px] w-[50px] rounded-xl hover:bg-[#F3F4F6] flex items-center justify-center",
+       active && "bg-[#F3F4F6] text-[#000F26]"
+     )}>
+     {documentIcon ? (
+        <div className="shrink-0  text-[25px]">
           {documentIcon}
         </div>
       ) : (
         <Icon 
-          className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground"
+          className="shrink-0 h-[50px] w-[25px]  text-[#606168]"
         />
       )}
-      <span className="truncate">
-        {label}
-      </span>
+
       {isSearch && (
-        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-          <span className="text-xs">⌘</span>K
+        <kbd >
+       
         </kbd>
       )}
       {!!id && (
@@ -168,6 +170,8 @@ export const Item = ({
           </div> */}
         </div>
       )}
+     </div>
+
     </div>
   )
 }

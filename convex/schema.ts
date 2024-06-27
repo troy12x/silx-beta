@@ -26,9 +26,10 @@ export default defineSchema({
     userId: v.string(),
     programmingLanguages: v.array(v.string()), 
     githubToken:v.optional(v.string()), // Array of strings
-    score:v.string(),
+    level:v.string(),
   })
   .index("by_user", ["userId"]),
+  
   company:defineTable({
     companyName:v.string(),
     companyDescription:v.string(),

@@ -31,6 +31,8 @@ interface IndividualProfileProps {
 const IndividualProfile = ({params}:IndividualProfileProps) => {
   const [yourName, setYourName] = useState("");
   const [yourEmail, setYourEmail] = useState("");
+  const [yourlevel,setLevel] = useState("");
+
   const [yourDescription, setYourDescription] = useState("");
   const [isCvUploaded, setIsCvUploaded] = useState(false);
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -45,7 +47,7 @@ const IndividualProfile = ({params}:IndividualProfileProps) => {
   const [isGitHubConnected, setIsGitHubConnected] = useState(false); // New state variable
   const [updatedDocumentId, setUpdatedDocumentId] = useState<string | null>(null);
   const [showMatchedContent, setShowMatchedContent] = useState(false);
- 
+
   const document = useQuery(api.individuals.getById, {
     id: params.documentId
   });
@@ -164,8 +166,9 @@ if (document === null) {
         skill: mainSkill,
         experience: yearsOfExperience,
         programmingLanguages,
-        score:score,
-        description:yourDescription,
+        level:yourlevel,
+       
+   
       
       })
       .then(() => {
@@ -176,10 +179,7 @@ if (document === null) {
       console.error("Update error:", error);
   });
 
-  if (!yourName || !yourDescription ) {
-    toast.error("Please fill out all the required fields.");
-    return;
-}
+
 
       toast.promise(promise, {
         loading: "Loading...",
@@ -276,20 +276,7 @@ if (document === null) {
               <option value="Front-end Developer">Front-end Developer</option>
             </select>
           </div>
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-            Description
 
-            </label>
-            <Textarea
-              name="description"
-              value={yourDescription}
-              onChange={(e) => setYourDescription(e.target.value)}
-              id="description"
-              placeholder="Enter your description"
-              className="mt-1 block w-full py-2 px-3 border rounded-md resize-none"
-            />
-          </div>
           <div>
             <label htmlFor="yearsOfExperience" className="block text-sm font-medium text-gray-700">
               Years of Experience

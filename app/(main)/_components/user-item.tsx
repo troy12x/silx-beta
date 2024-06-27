@@ -22,17 +22,17 @@ export const UserItem = () => {
   return (
     <DropdownMenu >
       <DropdownMenuTrigger asChild>
-        <div role="button" className="flex items-center text-sm p-3 w-full hover:bg-primary/5   pb-3">
-          <div className="gap-x-2 flex items-center max-w-[150px]">
-            <Avatar className="h-5 w-5">
+        <div role="button" className="flex items-center justify-center text-sm p-3 w-full hover:bg-primary/5   pb-3">
+          <div className=" flex items-center justify-center ">
+            <Avatar className="h-12 w-12 rounded-xl object-contain">
               <AvatarImage src={user?.imageUrl} />
             </Avatar>
-            <span className="text-start font-medium line-clamp-1">
+         {/**      <span className="text-start font-medium line-clamp-1">
               {user?.fullName}&apos;s 
-            </span>
+            </span> */}
           </div>
-          <ChevronsLeftRight className="rotate-90 ml-2 text-muted-foreground h-4 w-4" />
-        </div>
+          {/**          <ChevronsLeftRight className="rotate-90 ml-2 text-muted-foreground h-4 w-4" /> */}
+          </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-80"
@@ -46,13 +46,13 @@ export const UserItem = () => {
           </p>
           <div className="flex items-center gap-x-2">
             <div className="rounded-md bg-secondary p-1"> 
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-10 w-10 rounded-xl">
                 <AvatarImage src={user?.imageUrl} />
               </Avatar>
             </div>
             <div className="space-y-1">
               <p className="text-sm line-clamp-1">
-                {user?.fullName}&apos;s Jotion
+                {user?.fullName}
               </p>
             </div>
           </div>

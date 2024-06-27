@@ -18,10 +18,6 @@ import { Button } from "@/components/ui/button";
 
 export const Individual = () => {
 
-
-
-
-
   const navbarStyle = {
     fontFamily: "Outfit",  // Apply the Outlift font here
    

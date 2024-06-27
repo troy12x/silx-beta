@@ -6,8 +6,12 @@ import {
   Plus,
   PlusCircle,
   Search,
-
+  Bell,
+  BellDotIcon,
+  User2Icon,
   Settings,
+  Calendar,
+  CalendarDays,
   Trash, 
   Database
 } from "lucide-react";
@@ -31,7 +35,7 @@ import { UserItem } from "./user-item";
 import { Item } from "./item";
 import { DocumentList } from "./document-list";
 import { TrashBox } from "./trash-box";
-import { Navbar } from "./navbar";
+import { Navbar } from "./navbar copy";
 import { mutation } from "@/convex/_generated/server";
 
 
@@ -114,6 +118,21 @@ export const Navigation = () => {
     }
   };
 
+  const [updatedDocumentId, setUpdatedDocumentId] = useState<string | null>(null);
+  const handleSubmit = async (documentId:string) => {
+    setUpdatedDocumentId(documentId); // Store the updated documentId in local state
+
+  }
+
+
+
+  useEffect(() => {
+    if (updatedDocumentId) {
+      router.push(`/individuals/${updatedDocumentId}/profile/search`);
+    }
+  }, [updatedDocumentId, router]);
+  
+
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
@@ -133,78 +152,55 @@ export const Navigation = () => {
 
   };
   
+  const documents = useQuery(api.individuals.getTrash, {});
+  
+  if (documents === undefined) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <>
-      <aside
-        ref={sidebarRef}
+      <div
+     
         className={cn(
-          "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]",
-          isResetting && "transition-all ease-in-out duration-300",
+          " h-full border-r-2 border-[#EBE8E8] overflow-y-auto relative flex   w-[11vh] flex-col z-[99999]",
+          isResetting && "transition-all ease-in-out",
           isMobile && "w-0"
         )}
       >
-        <div
-          onClick={collapse}
-          role="button"
-          className={cn(
-            "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition ",
-            isMobile && "opacity-100"
-          )}
-        >
-          <ChevronsLeft className="h-6 w-6" />
-        </div>
+     
         <div>
           <UserItem />
           <Item
-            label="Search"
+            
             icon={Search}
             isSearch
-            onClick={search.onOpen}
+            onClick={() => handleSubmit(documents[0]._id)}
           />
           <Item
-            label="Settings"
-            icon={Settings}
+         
+            icon={User2Icon}
             onClick={settings.onOpen}
           />
           <Item
             onClick={handleCreate}
-            label="New page"
-            icon={PlusCircle}
+          
+            icon={BellDotIcon}
           />
-            <Item
-              onClick={() => handleManage()}
-           
-            label="Manage applications "
-            icon={Database}
-          />
-        </div>
-        <div className="mt-4">
-          <DocumentList />
           <Item
-            onClick={handleCreate}
-            icon={Plus}
-            
-            label="Add a page"
+          onClick={handleCreate}
+          icon={Settings}
+          />   
+         <Item
+          onClick={handleCreate}
+          icon={CalendarDays}
           />
-          <Popover>
-            <PopoverTrigger className="w-full mt-4">
-              <Item label="Trash" icon={Trash} />
-            </PopoverTrigger>
-            <PopoverContent
-              className="p-0 w-72"
-              side={isMobile ? "bottom" : "right"}
-            >
-              <TrashBox />
-            </PopoverContent>
-          </Popover>
+      
         </div>
-        <div
-          onMouseDown={handleMouseDown}
-          onClick={resetWidth}
-          className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
-        />
-      </aside>
+       
+   
+      </div>
       <div
         ref={navbarRef}
         className={cn(

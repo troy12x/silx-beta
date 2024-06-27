@@ -1,7 +1,8 @@
 const nextConfig = {
   images: {
     domains: [
-      "files.edgestore.dev"
+      "files.edgestore.dev",
+      "applicantai.com"
     ]
   },
   webpack: (config, { isServer }) => {

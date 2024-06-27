@@ -15,7 +15,7 @@ import { EditProfile } from './profile';
 interface IndividualProfileProps {
     params: {
         documentId: Id<"individual">;
-      };
+   };
 }
 
 const ProfilePage= ({params}:IndividualProfileProps) => {

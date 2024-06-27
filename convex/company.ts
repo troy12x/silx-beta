@@ -239,3 +239,5 @@ export const insert = mutation({
     return company;
   },
 });
+
+

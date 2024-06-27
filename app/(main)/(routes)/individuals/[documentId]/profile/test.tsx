@@ -174,9 +174,11 @@ export const EditProfile = ({
             level:level
            });
         } else {
+          throw new Error("Failed to analyze text");
         }
       } catch (error) {
         console.error("Error analyzing text:", error);
+        toast.error("Failed to analyze text");
       }
     }
 
@@ -341,23 +343,9 @@ export const EditProfile = ({
            <div className="">
      
           <h2 className="font-bold">Overview</h2>
-           <p className="mt-3" >Eyad Gomaa excels in blending UI/UX design principles with front-end development to create engaging and user-friendly digital experiences. His expertise lies in:
-
-UI/UX Design: Eyad leverages his keen understanding of user behavior and design aesthetics to craft intuitive interfaces. His designs prioritize user experience, ensuring seamless navigation and accessibility.
-
-Front-end Development: Proficient in technologies such as TypeScript and Next.js, Eyad brings designs to life with clean, responsive front-end code. He integrates design mockups seamlessly with functionality, enhancing user interactions.
-
-Platform Development: Eyad's current project involves developing an AI-driven job matching platform. This endeavor showcases his ability to conceptualize complex functionalities and translate them into user-centric features.
-
-Technological Integration: Eyad integrates authentication using Firebase, while leveraging MongoDB for efficient database operations. His approach emphasizes scalability and real-time data management.
-
-Design Tools and Methodologies: Eyad utilizes tools like Tailwind CSS for styling, GitHub for version control, and integrates social media APIs (GitHub, Instagram, Twitter, LinkedIn) to enhance user profiles and ranking algorithms.
-
-Eyad Gomaa's approach combines creativity with technical proficiency, aiming to optimize user engagement and satisfaction through innovative UI/UX design and robust front-end development practices.</p>
+           <p className="mt-3" >{aiResponse}</p>
      
          </div>
-
-         
 
          <div className="mt-5">
           <h2 className="font-bold text-lg">{initialData.name} Strong points</h2>
@@ -386,81 +374,6 @@ Eyad Gomaa's approach combines creativity with technical proficiency, aiming to 
         </div>
         <div className="mt-[1rem]">
         <Leaderx />
-        </div>
-
-        <div>
-        <section className="w-full">
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Digital Brain</h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Insights into your psychological profile and how your digital habits shape your mind.
-            </p>
-          </div>
-        </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
-          <div className="rounded-lg border bg-background p-6 shadow-sm">
-            <h3 className="text-xl font-bold">Attention Span</h3>
-            <p className="text-muted-foreground">
-              Your digital habits suggest a shorter attention span. Try implementing more focused work sessions to
-              improve concentration.
-            </p>
-          </div>
-          <div className="rounded-lg border bg-background p-6 shadow-sm">
-            <h3 className="text-xl font-bold">Emotional Regulation</h3>
-            <p className="text-muted-foreground">
-              Your online activity indicates you may struggle with emotional regulation. Consider mindfulness practices
-              to better manage your feelings.
-            </p>
-          </div>
-          <div className="rounded-lg border bg-background p-6 shadow-sm">
-            <h3 className="text-xl font-bold">Social Awareness</h3>
-            <p className="text-muted-foreground">
-              Your digital footprint suggests you could benefit from improving your social awareness. Try engaging in
-              more meaningful interactions.
-            </p>
-          </div>
-          <div className="rounded-lg border bg-background p-6 shadow-sm">
-            <h3 className="text-xl font-bold">Memory Retention</h3>
-            <p className="text-muted-foreground">
-              Your online habits may be impacting your memory retention. Consider taking breaks from digital devices to
-              improve your recall.
-            </p>
-          </div>
-          <div className="rounded-lg border bg-background p-6 shadow-sm">
-            <h3 className="text-xl font-bold">Cognitive Flexibility</h3>
-            <p className="text-muted-foreground">
-              Your digital activities indicate you could benefit from improving your cognitive flexibility. Try learning
-              new skills to challenge your mind.
-            </p>
-          </div>
-          <div className="rounded-lg border bg-background p-6 shadow-sm">
-            <h3 className="text-xl font-bold">Impulse Control</h3>
-            <p className="text-muted-foreground">
-              Your online behavior suggests you may struggle with impulse control. Consider implementing digital detox
-              strategies to improve self-regulation.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-        </div>
-
-        <div>
-        <section className="w-full max-w-md mx-auto py-12 px-6">
-      <div className="bg-card rounded-lg shadow-lg p-8 space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold">You've been matched with</h2>
-          <p className="text-3xl font-bold text-primary">Acme Inc.</p>
-        </div>
-        <div className="text-center text-muted-foreground">
-          Congratulations! We've reviewed your application and think you'd be a great fit for the open position at Acme
-          Inc. Let's schedule an interview to discuss the next steps.
-        </div>
-        <Button className="w-full">Schedule Interview</Button>
-      </div>
-    </section>
         </div>
 
         {/** <div className='mt-4 flex items-center justify-center '> 

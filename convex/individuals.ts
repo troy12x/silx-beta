@@ -16,7 +16,8 @@ export const create = mutation({
     cv:v.string(),
     email:v.string(),
     programmingLanguages: v.array(v.string()),
-    score:v.string()
+  
+    level:v.string()
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -35,8 +36,9 @@ export const create = mutation({
       name:args.name,
       cv:args.cv,
       email:args.email,
+      level:args.level,
       githubToken:args.githubToken,
-      score:args.score,
+ 
       programmingLanguages: args.programmingLanguages,
       userId,
       description:args.description
@@ -301,28 +303,22 @@ export const getServer = mutation({
 export const getById = query({
   args: { id: v.id("individual") },
   handler: async (ctx, args) => {
+
+    
     const identity = await ctx.auth.getUserIdentity();
 
     const document = await ctx.db.get(args.id);
 
     if (!document) {
       throw new Error("Not found");
-    } 
-
-    if (!identity) {
-      throw new Error("Not authenticated");
     }
 
-    const userId = identity.subject;
 
-    if (document.userId !== userId) {
-      throw new Error("Unauthorized");
-    }
+
 
     return document;
   }
 });
-
 
 
 export const getIndividual = query({
@@ -366,10 +362,8 @@ export const update = mutation({
     email:v.string(),
     skill: v.optional(v.string()),
     experience: v.optional(v.string()),
-    description:v.string(),
-    score:v.optional(v.string()),
     programmingLanguages: v.optional(v.array(v.string())),  // Add this line
-
+    level: v.optional(v.string())
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -390,7 +384,7 @@ export const update = mutation({
       throw new Error("Unauthorized");
     }
 
-    if (!args.name || !args.email || !args.description ) {
+    if (!args.name || !args.email ) {
       throw new Error("Required fields cannot be empty");
     }
 
@@ -401,10 +395,9 @@ export const update = mutation({
       experience: args.experience,
       name:args.name,
       email:args.email,
-      score:args.score,
-    
+      level:args.level,
       userId,
-      description:args.description,
+
       programmingLanguages: args.programmingLanguages,  // Add this line
     
     });
@@ -491,4 +484,68 @@ export const removeCV = mutation({
 
     return document;
   }
+});
+
+
+export const title = mutation({
+  args: {
+    id: v.id("individual"),
+    level:v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingCompany = await ctx.db.get(args.id);
+
+    if (!existingCompany) {
+      throw new Error("Company not found");
+    }
+
+    if (existingCompany.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+ 
+
+    const company = await ctx.db.patch(args.id, {
+     level: args.level,
+    });
+
+    return company;
+  },
+});
+
+export const getUserById = query({
+  args: {
+   id: v.optional(v.id("individual")),
+
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw console.log('test');
+    }
+
+    const userId = identity.subject;
+
+    const documents = await ctx.db
+      .query("individual")
+      .withIndex("by_user", (q) =>
+        q
+          .eq("userId", userId)
+   
+      )
+
+      .order("desc")
+      .collect();
+
+    return documents;
+  },
 });

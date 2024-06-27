@@ -56,6 +56,7 @@ const PickComp = ({}: PickProps) => {
         payingSalary: "",
         reqExp:"",
         filters:""
+      
       })
       .then((documentId) => router.push(`/company/${documentId}`))
 
@@ -80,19 +81,20 @@ const PickComp = ({}: PickProps) => {
         individualTitle: "Individual",
         skill: "",
         experience: "",
-        score:"",
+     
         email: "",
         name: "",
         description: "",
         cv:"",
         programmingLanguages: [""],
-        githubToken:""
+        githubToken:"",
+        level:""
       })
       .then((documentId) => router.push(`/individuals/${documentId}`))
 
       toast.promise(promise, {
         loading: "Loading...",
-       
+        success:"Account created successfully!"
       });
     
   };
